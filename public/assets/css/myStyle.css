@@ -1,0 +1,28 @@
+/**
+ * CSS file to override the template's file when needed
+ */
+
+body, h1, h2, h3, h4, h5, h6 {
+    font-family: "Shadows Into Light Two", cursive;
+    font-size: larger;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    text-transform: uppercase;
+}
+
+/* category */
+
+.clients a:hover {
+    color: #3498db;
+}
+
+.clients {
+    text-transform: uppercase;
+}
+
+#header .logo img {
+    padding: 0;
+    margin: 0;
+    max-height: 50px;
+  }
