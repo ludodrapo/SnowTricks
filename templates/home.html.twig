@@ -49,15 +49,14 @@
 
 			<div class="row">
 
-				{% for i in 1..6 %}
+				{% for trick in tricks %}
 					<div class="col-lg-6 d-flex align-items-stretch mt-4">
-						<div class="card" style='background-image: url("assets/img/pictures/picture_{{ i }}.jpg");' data-aos="fade-up" data-aos-delay="100">
+						<div class="card" style='background-image: url("assets/img/pictures/picture_1.jpg");' data-aos="fade-up" data-aos-delay="100">
 							<div class="card-body">
 								<h5 class="card-title">
-									<a href="{{ path('trick_show') }}">Trick n°
-										{{ i }}</a>
+									<a href="{{ path('trick_show') }}">{{ trick.name }}</a>
 								</h5>
-								<p class="card-text">Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor ut labore et dolore magna aliqua.</p>
+								<p class="card-text">{{ trick.description[:100] ~ (trick.description|length > 100 ? '...') }}</p>
 								<div class="read-more">
 									<a href="{{ path('trick_show') }}">
 										<i class="bi bi-arrow-right"></i>
