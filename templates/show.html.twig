@@ -17,7 +17,7 @@
 						<li>
 							<a href="{{ path('home') }}">Home</a>
 						</li>
-						<li>category.name</li>
+						<li>{{ trick.category.name }}</li>
 						<li>{{ trick.name }}</li>
 					</ol>
 				</div>
@@ -53,7 +53,8 @@
 							<h3>Points clés du trick</h3>
 							<ul>
 								<li>
-									<strong>Category</strong>: Web design</li>
+									<strong>Category</strong>:
+									{{ trick.category.name }}</li>
 								<li>
 									<strong>Client</strong>: ASU Company</li>
 								<li>

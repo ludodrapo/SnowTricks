@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\CategoryRepository;
+use App\Repository\GroupRepository;
 use App\Repository\TrickRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

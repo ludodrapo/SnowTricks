@@ -27,18 +27,24 @@
 	<!-- End Hero -->
 
 	<!-- ======= Category Section ======= -->
-	<section id="category" class="clients clients">
+	<section id="category" class="features">
 		<div class="container">
+			<div class="section-title" data-aos="fade-up">
+				<h2>Catégories</h2>
+				<p>Vous pouvez rechercher votre tricks par catégorie</p>
+			</div>
 
-			<div class="row">
-				{% for i in 1..6 %}
-					<div class="col-lg-2 col-md-4 col-6">
-						<a href="#" class="btn">Category n°
-							{{ i }}</a>
+			<div class="row" data-aos="fade-up" data-aos-delay="300">
+				{% for category in categoryRepository.findAll() %}
+					<div class="col-6 col-lg-3 col-md-4 mt-3">
+						<div class="icon-box">
+							<h3>
+								<a href="">{{ category.name }}</a>
+							</h3>
+						</div>
 					</div>
 				{% endfor %}
 			</div>
-
 		</div>
 	</section>
 	<!-- End Category Section -->
