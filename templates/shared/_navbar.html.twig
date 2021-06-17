@@ -4,15 +4,14 @@
 
 		<div class="logo">
 			<h1>
-				{# <a href="#">SnowTricks</a> #}
-				<a href="{{ path('home') }}"><img src="assets/img/snowtricks-logo.png" alt="" class="img-fluid"></a>
+				<a href="{{ path('home') }}"><img src="/assets/img/snowtricks-logo.png" alt="" class="img-fluid"></a>
 			</h1>
 		</div>
 
 		<nav id="navbar" class="navbar">
 			<ul>
 				<li>
-					<a class="nav-link scrollto active" href="#">Accueil</a>
+					<a class="nav-link scrollto active" href="{{ path('home') }}">Accueil</a>
 				</li>
 				<li>
 					<a class="nav-link scrollto" href="#">Un peu d'histoire</a>
@@ -31,7 +30,7 @@
 					</ul>
 				</li>
 				<li>
-					<a class="nav-link scrollto" href="#">Contact</a>
+					<a class="nav-link scrollto" href="{{ path('trick_create') }}">Ajouter</a>
 				</li>
 				<li>
 					<a class="getstarted scrollto" href="#">Je me connecte ...</a>

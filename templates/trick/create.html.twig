@@ -1,0 +1,32 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	Création d'un trick
+{% endblock %}
+
+{% block body %}
+
+	<section id="trick_form" class="portfolio-details mt-5">
+		<div class="container">
+			<h2>Nouveau trick</h2>
+
+			{{ form_start(formView) }}
+
+			<div class="row mb-3">
+				<div class="col-md-6">
+					{{ form_row(formView.name) }}
+					{{ form_row(formView.category) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_row(formView.description) }}
+				</div>
+			</div>
+			<button type="submit">
+				<i class="fas fa-save"></i>
+				Créer le trick
+			</button>
+			{{ form_end(formView) }}
+		</div>
+	</section>
+
+{% endblock %}

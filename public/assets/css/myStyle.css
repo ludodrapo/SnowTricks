@@ -11,3 +11,17 @@
 .clients {
     text-transform: uppercase;
 }
+
+/* submit */
+#trick_form button[type="submit"] {
+    background: #3498db;
+    padding: 8px 25px;
+    margin-left: 30px;
+    border-radius: 50px;
+    color: #fff;
+  }
+  
+#trick_form button[type="submit"]:hover {
+    color: #fff;
+    background: #4aa3df;
+}

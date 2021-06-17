@@ -2,14 +2,26 @@
 
 namespace App\Controller;
 
+use App\Entity\Trick;
+use App\Form\TrickType;
+use App\Entity\Category;
+use Doctrine\ORM\EntityManager;
 use App\Repository\TrickRepository;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TrickController extends AbstractController
 {
     /**
-     * @Route("/{slug}", name="trick_show")
+     * @Route("/{category_slug}/{slug}", name="trick_show")
      */
     public function show($slug, TrickRepository $trickRepository)
     {
@@ -17,7 +29,79 @@ class TrickController extends AbstractController
             'slug' => $slug
         ]);
 
-        return $this->render('show.html.twig', [
+        if (!$trick) {
+            throw $this->createNotFoundException("Désolé, ce trick n'existe pas ou plus.");
+        }
+
+        return $this->render('trick/show.html.twig', [
+            'trick' => $trick
+        ]);
+    }
+
+    /**
+     * @Route("admin/trick/create", name="trick_create")
+     */
+    public function create(Request $request, SluggerInterface $slugger, EntityManagerInterface $em)
+    {
+        $trick = new Trick;
+
+        $form = $this->createForm(TrickType::class, $trick);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $trick->setSlug(strtolower($slugger->slug($trick->getName())));
+            $date = new DateTime();
+            $trick->setCreationDate($date);
+            $em->persist($trick);
+            $em->flush();
+
+            return $this->redirectToRoute('trick_show', [
+                'category_slug' => $trick->getCategory()->getSlug(),
+                'slug' => $trick->getSlug()
+            ]);
+        }
+
+        $formView = $form->createView();
+
+        return $this->render('trick/create.html.twig', [
+            'formView' => $formView
+        ]);
+    }
+
+    /**
+     * @Route("admin/trick/edit/{id}", name="trick_edit")
+     */
+    public function edit(
+        $id,
+        Request $request,
+        TrickRepository $trickRepository,
+        SluggerInterface $slugger,
+        EntityManagerInterface $em
+    ) {
+        $trick = $trickRepository->find($id);
+
+        $form = $this->createForm(TrickType::class, $trick);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $trick->setSlug(strtolower($slugger->slug($trick->getName())));
+
+            $em->flush();
+
+            return $this->redirectToRoute('trick_show', [
+                'category_slug' => $trick->getCategory()->getSlug(),
+                'slug' => $trick->getSlug()
+            ]);
+        }
+
+        $formView = $form->createView();
+
+        return $this->render('trick/edit.html.twig', [
+            'formView' => $formView,
             'trick' => $trick
         ]);
     }
