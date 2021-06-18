@@ -50,18 +50,24 @@
 
 				<div class="col-lg-4">
 					<div class="portfolio-info">
-						<h3>Points clés du trick</h3>
+						<h3>{{ trick.name }}</h3>
 						<ul>
 							<li>
-								<strong>Category</strong>:
+								<strong>Catégorie
+								</strong>:
 								{{ trick.category.name }}</li>
 							<li>
-								<strong>Date de création</strong>:
+								<strong>Auteur
+								</strong>: user.name</li>
+							<li>
+								<strong>Date de création
+								</strong>:
 								{{ trick.creationDate|date("d/m/Y") }}</li>
 							<li>
 								<a class="getstarted scrollto" href="{{ path('trick_edit', { 'id': trick.id }) }}">
 									<i class="fas fa-pen"></i>
-									Modifier ce trick</a>
+									Modifier ce trick
+								</a>
 							</li>
 						</ul>
 					</div>
