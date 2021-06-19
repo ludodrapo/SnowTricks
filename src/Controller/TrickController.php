@@ -11,19 +11,16 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
 class TrickController extends AbstractController
 {
     /**
      * @Route("/{category_slug}/{slug}", name="trick_show")
      */
-    public function show($slug, TrickRepository $trickRepository)
+    public function show($slug, TrickRepository $trickRepository): Response
     {
         $trick = $trickRepository->findOneBy([
             'slug' => $slug
@@ -41,7 +38,7 @@ class TrickController extends AbstractController
     /**
      * @Route("admin/trick/create", name="trick_create")
      */
-    public function create(Request $request, SluggerInterface $slugger, EntityManagerInterface $em)
+    public function create(Request $request, SluggerInterface $slugger, EntityManagerInterface $em): Response
     {
         $trick = new Trick;
 
@@ -79,7 +76,7 @@ class TrickController extends AbstractController
         TrickRepository $trickRepository,
         SluggerInterface $slugger,
         EntityManagerInterface $em
-    ) {
+    ): Response {
         $trick = $trickRepository->find($id);
 
         $form = $this->createForm(TrickType::class, $trick);
