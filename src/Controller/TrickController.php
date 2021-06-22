@@ -60,15 +60,13 @@ class TrickController extends AbstractController
             ]);
         }
 
-        $formView = $form->createView();
-
         return $this->render('trick/create.html.twig', [
-            'formView' => $formView
+            'formView' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("admin/trick/edit/{id}", name="trick_edit")
+     * @Route("admin/trick/{id}/edit", name="trick_edit")
      */
     public function edit(
         $id,

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use DateTime;
+use App\Entity\Video;
+use App\Entity\Picture;
 use App\Entity\Category;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TrickRepository;
-use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -55,6 +57,7 @@ class Trick
      * @var Collection<int, Picture>
      * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="trick", orphanRemoval=true, cascade={"persist"})
      * @Assert\Count(min=1, minMessage="Vous devez associer au moins une photo à votre trick.")
+     * @Assert\Valid
      */
     private Collection $pictures;
 
@@ -62,6 +65,7 @@ class Trick
      * @var Collection<int, Video>
      * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", orphanRemoval=true, cascade={"persist"})
      * @Assert\Count(min=1, minMessage="Vous devez associer au moins une vidéo à votre trick.")
+     * @Assert\Valid
      */
     private $videos;
 
@@ -147,7 +151,7 @@ class Trick
     public function addPicture(?Picture $picture): self
     {
         if (!$this->pictures->contains($picture)) {
-            $this->pictures[] = $picture;
+            $this->pictures->add($picture);
             $picture->setTrick($this);
         }
 
@@ -177,7 +181,7 @@ class Trick
     public function addVideo(Video $video): self
     {
         if (!$this->videos->contains($video)) {
-            $this->videos[] = $video;
+            $this->videos->add($video);
             $video->setTrick($this);
         }
 

@@ -15,7 +15,13 @@ class PictureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('url', TextType::class);
+            ->add('url', TextType::class, [
+                'label' => 'Chemin vers la photo',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Saisissez l\'url de la photo sélectionnée'
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

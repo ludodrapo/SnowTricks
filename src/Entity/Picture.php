@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Entity\Trick;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PictureRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PictureRepository::class)
@@ -22,6 +23,8 @@ class Picture
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Un chemin vers la photo doit être saisi.")
+     * @Assert\Length(min=3, max=255, minMessage="Le chemin doit faire au moins 3 caractères.")
      */
     private string $url;
 

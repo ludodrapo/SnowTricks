@@ -1,32 +1,25 @@
 {% extends "base.html.twig" %}
 
 {% block title %}
-	Création d'un trick
+	Snowtricks - nouveau trick
 {% endblock %}
 
 {% block body %}
-
-	<section id="trick_form" class="portfolio-details mt-5">
+	<section id="trick_form" class="mt-5">
 		<div class="container">
 			<h2>Nouveau trick</h2>
-
 			{{ form_start(formView) }}
+			{{ form_widget(formView._token)}}
 
-			<div class="row mb-3">
-				<div class="col-md-6">
-					{{ form_row(formView.name) }}
-					{{ form_row(formView.category) }}
-				</div>
-				<div class="col-md-6">
-					{{ form_row(formView.description) }}
-				</div>
+			{{ include("trick/_trickForm.html.twig", {form: formView}) }}
+			
+			<divclass="row">
+				<button type="submit">
+					<i class="fas fa-save"></i>
+					Créer le trick
+				</button>
 			</div>
-			<button type="submit">
-				<i class="fas fa-save"></i>
-				Créer le trick
-			</button>
-			{{ form_end(formView) }}
+			{{ form_end(formView, {render_rest: false}) }}
 		</div>
 	</section>
-
 {% endblock %}
