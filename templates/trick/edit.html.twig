@@ -6,10 +6,15 @@
 {% endblock %}
 
 {% block body %}
-
 	<section id="trick_form" class="portfolio-details mt-5">
 		<div class="container">
-			<h2>{{ trick.name }}</h2>
+			<h2>{{ trick.name }}
+				<a href="{{ path('trick_delete', {id: trick.id}) }}">
+					<button class="btn btn-danger">
+						<i class="fas fa-trash-alt"></i>
+					</button>
+				</a>
+			</h2>
 
 			{{ form_start(formView) }}
 			{{ form_widget(formView._token)}}

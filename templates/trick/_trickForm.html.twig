@@ -8,27 +8,30 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-6">
-		<h4>Images</h4>
-		<button type="button" class="btn btn-info btn-new" data-collection="#pictures">
-			<i class="fas fa-images"></i>
-			Ajouter une image
-		</button>
+	<div class="col-lg-6">
+		<div class="my-3">
+			<h4>Ici les images ...</h4>
+			<button type="button" class="btn btn-info btn-new" data-collection="#pictures">
+				<i class="fas fa-images"></i>
+				Ajouter une image
+			</button>
+		</div>
 		<div id="pictures" data-prototype="{{ include("trick/_addPictureForm.html.twig", {formView: formView.pictures.vars.prototype})|e('html_attr') }}" data-index="{{ formView.pictures|length > 0 ? formView.pictures|last.vars.name + 1 : 0}}">
 
 			{% for picture in formView.pictures %}
 				{{ include("trick/_addPictureForm.html.twig", {formView: picture}) }}
 			{% endfor %}
 		</div>
-
-		{{ form_errors(formView.pictures) }}
+			{{ form_errors(formView.pictures) }}
 	</div>
-	<div class="col-md-6">
-		<h4>Vidéos</h4>
-		<button type="button" class="btn btn-info btn-new" data-collection="#videos">
-			<i class="fas fa-film"></i>
-			Ajouter une vidéo
-		</button>
+	<div class="col-lg-6">
+		<div class="my-3">
+			<h4>... et là les vidéos</h4>
+			<button type="button" class="btn btn-info btn-new" data-collection="#videos">
+				<i class="fas fa-film"></i>
+				Ajouter une vidéo
+			</button>
+		</div>
 		<div id="videos" data-prototype="{{ include("trick/_addVideoForm.html.twig", {formView: formView.videos.vars.prototype})|e('html_attr') }}" data-index="{{ formView.videos|length > 0 ? formView.videos|last.vars.name + 1 : 0}}">
 
 			{% for video in formView.videos %}

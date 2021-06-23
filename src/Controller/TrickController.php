@@ -2,23 +2,44 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Trick;
 use App\Form\TrickType;
-use App\Entity\Category;
-use Doctrine\ORM\EntityManager;
 use App\Repository\TrickRepository;
-use DateTime;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 
 class TrickController extends AbstractController
 {
     /**
+     * @Route("/{slug}", name="trick_category", priority=-1)
+     */
+    public function category($slug, CategoryRepository $categoryRepository): Response
+    {
+        $category = $categoryRepository->findOneBy([
+            'slug' => $slug
+        ]);
+
+        if (!$category) {
+            throw $this->createNotFoundException("La catégorie demandée n'existe pas ou plus.");
+        }
+
+        return $this->render('trick/category.html.twig', [
+            'slug' => $slug,
+            'category' => $category
+        ]);
+    }
+
+    /**
      * @Route("/{category_slug}/{slug}", name="trick_show")
+     * @param [string] $slug
+     * @param TrickRepository $trickRepository
+     * @return Response
      */
     public function show($slug, TrickRepository $trickRepository): Response
     {
@@ -37,6 +58,10 @@ class TrickController extends AbstractController
 
     /**
      * @Route("admin/trick/create", name="trick_create")
+     * @param Request $request
+     * @param SluggerInterface $slugger
+     * @param EntityManagerInterface $em
+     * @return Response
      */
     public function create(Request $request, SluggerInterface $slugger, EntityManagerInterface $em): Response
     {
@@ -67,6 +92,12 @@ class TrickController extends AbstractController
 
     /**
      * @Route("admin/trick/{id}/edit", name="trick_edit")
+     * @param [int] $id
+     * @param Request $request
+     * @param TrickRepository $trickRepository
+     * @param SluggerInterface $slugger
+     * @param EntityManagerInterface $em
+     * @return Response
      */
     public function edit(
         $id,
@@ -99,5 +130,23 @@ class TrickController extends AbstractController
             'formView' => $formView,
             'trick' => $trick
         ]);
+    }
+
+    /**
+     * @Route("/admin/trick/{id}/delete", name="trick_delete")
+     * @param TrickRepository $trickRepository
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    public function delete(
+        TrickRepository $trickRepository,
+        EntityManagerInterface $em,
+        $id
+    ): Response {
+
+        $em->remove($trickRepository->find($id));
+        $em->flush();
+
+        return $this->redirectToRoute('home');
     }
 }

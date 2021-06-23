@@ -8,7 +8,8 @@ const newItem = (e) => {
     const collectionHolder = document.querySelector(e.currentTarget.dataset.collection);
 
     const item = document.createElement('div');
-    item.classList.add('col-lg-8');
+    // item.classList.add('container');
+
     item.innerHTML += collectionHolder
         .dataset
         .prototype
@@ -24,13 +25,9 @@ const newItem = (e) => {
     collectionHolder.dataset.index++;
 };
 
-// const checkTarget = (e) => {
-//     consol.log(e.currentTarget.closest('.item'));
-// };
-
 document
     .querySelectorAll('.btn-remove')
-    .forEach(btn => btn.addEventListener('click', (e) => e.currentTarget.closest('.item').remove()));
+    .forEach(btn => btn.addEventListener('click', (e) => e.currentTarget.closest('.row').remove()));
 
 document
     .querySelectorAll('.btn-new')

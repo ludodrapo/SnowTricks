@@ -31,7 +31,7 @@
 		<div class="container">
 			<div class="section-title" data-aos="fade-up">
 				<h2>Catégories</h2>
-				<p>Vous pouvez rechercher votre tricks par catégorie</p>
+				<p>Vous pouvez aussi faire une recherche par catégorie de tricks</p>
 			</div>
 
 			<div class="row" data-aos="fade-up" data-aos-delay="300">
@@ -39,7 +39,7 @@
 					<div class="col-6 col-lg-3 col-md-4 mt-3">
 						<div class="icon-box">
 							<h3>
-								<a href="">{{ category.name }}</a>
+								<a href="{{ path('trick_category', {'slug': category.slug}) }}">{{ category.name }}</a>
 							</h3>
 						</div>
 					</div>
@@ -49,7 +49,7 @@
 	</section>
 	<!-- End Category Section -->
 
-	<!-- ======= More Services Section ======= -->
+	<!-- ======= Last created tricks Section ======= -->
 	<section id="last-tricks" class="more-services">
 		<div class="container">
 

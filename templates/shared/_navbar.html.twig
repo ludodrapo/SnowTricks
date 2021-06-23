@@ -24,7 +24,7 @@
 					<ul>
 						{% for category in categoryRepository.findAll() %}
 							<li>
-								<a href="#">{{ category.name }}</a>
+								<a href="{{ path('trick_category', {'slug': category.slug}) }}">{{ category.name }}</a>
 							</li>
 						{% endfor %}
 					</ul>
