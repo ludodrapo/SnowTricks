@@ -7,10 +7,13 @@ namespace App\Entity;
 use App\Entity\Trick;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PictureRepository;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * Class Picture
  * @ORM\Entity(repositoryClass=PictureRepository::class)
+ * @ORM\EntityListeners({"App\EntityListener\PictureListener"})
  */
 class Picture
 {
@@ -23,10 +26,14 @@ class Picture
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Un chemin vers la photo doit être saisi.")
-     * @Assert\Length(min=3, max=255, minMessage="Le chemin doit faire au moins 3 caractères.")
      */
-    private string $url;
+    private string $path;
+
+    /**
+     * @var UploadedFile|null
+     * @Assert\Image
+     */
+    private ?UploadedFile $file = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="pictures")
@@ -39,14 +46,14 @@ class Picture
         return $this->id;
     }
 
-    public function getUrl(): ?string
+    public function getPath(): ?string
     {
-        return $this->url;
+        return $this->path;
     }
 
-    public function setUrl(string $url): self
+    public function setPath(string $path): self
     {
-        $this->url = $url;
+        $this->path = $path;
 
         return $this;
     }
@@ -61,5 +68,21 @@ class Picture
         $this->trick = $trick;
 
         return $this;
+    }
+
+    /**
+     * @return UploadedFile|null
+     */
+    public function getFile(): ?UploadedFile
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param UploadedFile|null $file
+     */
+    public function setFile(?UploadedFile $file): void
+    {
+        $this->file = $file;
     }
 }

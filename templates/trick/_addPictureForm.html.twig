@@ -1,5 +1,8 @@
-<div class="row item">
+<div class="row item mb-3">
 	<div class="col-10">
+		{% if formView.vars.data is not null and formView.vars.data.path is not null %}
+			<img src="{{ asset(formView.vars.data.path)}}" alt="" width="150" height="100">
+		{% endif %}
 		{{ form_widget(formView) }}
 	</div>
 	<div class="col-2">

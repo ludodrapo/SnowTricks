@@ -1,0 +1,74 @@
+<?php
+
+namespace App\EntityListener;
+
+use App\Entity\Picture;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\String\Slugger\SluggerInterface;
+
+/**
+ * Class PictureListener
+ * @package App\EntityListener
+ */
+class PictureListener
+{
+    /**
+     * @var string
+     */
+    private string $picturesDir;
+
+    /**
+     * @var string
+     */
+    private string $picturesAbsoluteDir;
+
+    /**
+     * PictureListener constructor
+     * @param string $picturesDir
+     * @param string $picturesAbsoluteDir
+     * @param SluggerInterface $slugger
+     */
+    public function __construct(string $picturesDir, string $picturesAbsoluteDir, SluggerInterface $slugger)
+    {
+        $this->picturesDir = $picturesDir;
+        $this->picturesAbsoluteDir = $picturesAbsoluteDir;
+        $this->slugger = $slugger;
+    }
+
+    /**
+     * @param Picture $picture
+     */
+    public function prePersist(Picture $picture): void
+    {
+        $this->upload($picture);
+    }
+
+    /**
+     * @param Picture $picture
+     */
+    public function preUpload(Picture $picture): void
+    {
+        $this->upload($picture);
+    }
+
+    /**
+     * Upload image if instance of UploadedFile
+     *
+     * @param Picture $picture
+     * @return void
+     */
+    private function Upload(Picture $picture): void
+    {
+        $file = $picture->getFile();
+
+        if ($file instanceof UploadedFile) {
+            
+            $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $filename = $originalFilename . '-' . uniqid() . '.' . $file->guessClientExtension();
+
+            $file->move($this->picturesAbsoluteDir, $filename);
+
+            $picture->setPath(sprintf('%s/%s', $this->picturesDir, $filename));
+        }
+    }
+}

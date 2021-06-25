@@ -11,6 +11,8 @@ use App\Entity\Category;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TrickRepository;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,7 +30,7 @@ class Trick
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Un nom de trick doit être saisi.")
+     * @Assert\NotBlank(message="Ce champs ne peut être vide.")
      * @Assert\Length(min=3, max=255, minMessage="Le nom du produit doit être d'au moins 3 caractères.")
      */
     private string $name;
@@ -40,6 +42,7 @@ class Trick
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="Ce champs ne peut être vide.")
      */
     private string $description;
 
@@ -160,9 +163,11 @@ class Trick
 
     public function removePicture(?Picture $picture): self
     {
+        $filesystem = new Filesystem();
         if ($this->pictures->removeElement($picture)) {
             // set the owning side to null (unless already changed)
             if ($picture->getTrick() === $this) {
+                $filesystem->remove($picture->getPath());
                 $picture->setTrick(null);
             }
         }

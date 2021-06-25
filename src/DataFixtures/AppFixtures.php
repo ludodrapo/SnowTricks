@@ -37,15 +37,15 @@ class AppFixtures extends Fixture
                         ->setCategory($category)
                         ->addPicture(
                             (new Picture())
-                                ->setUrl("/assets/img/pictures/picture_1.jpg")
+                                ->setFilePath("/uploads/pictures/picture_1.jpg")
                         )
                         ->addPicture(
                             (new Picture())
-                                ->setUrl("/assets/img/pictures/picture_2.jpg")
+                                ->setFilePath("/uploads/pictures/picture_2.jpg")
                         )
                         ->addPicture(
                             (new Picture())
-                                ->setUrl("/assets/img/pictures/picture_3.jpg")
+                                ->setFilePath("/uploads/pictures/picture_3.jpg")
                         )
                         ->addVideo(
                             (new Video())
