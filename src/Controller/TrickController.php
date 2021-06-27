@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -150,7 +151,15 @@ class TrickController extends AbstractController
         $id
     ): Response {
 
-        $em->remove($trickRepository->find($id));
+        $filesystem = new Filesystem;
+        $trick = $trickRepository->find($id);
+        $pictures = $trick->getPictures();
+        
+        foreach($pictures as $picture) {
+            $filesystem->remove($picture->getPath());
+        }
+
+        $em->remove($trick);
         $em->flush();
 
         return $this->redirectToRoute('home');

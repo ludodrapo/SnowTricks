@@ -22,7 +22,7 @@ class AppFixtures extends Fixture
 
             $manager->persist(
                 $category
-                    ->setName('Categorie n°' . $i)
+                    ->setName('Categorie ' . $i)
                     ->setSlug('categorie-' . $i)
             );
 
@@ -30,22 +30,22 @@ class AppFixtures extends Fixture
 
                 $manager->persist(
                     (new Trick())
-                        ->setName('Trick n°' . $index)
+                        ->setName('Trick ' . $index)
                         ->setSlug('trick-' . $index)
                         ->setDescription("Courte description de comment réaliser le trick, histoire d'avoir quelque chose dans la description. Et aussi parce que les lorem ipsum, ça suffit !")
                         ->setCreationDate(new DateTime('now'))
                         ->setCategory($category)
                         ->addPicture(
                             (new Picture())
-                                ->setFilePath("/uploads/pictures/picture_1.jpg")
+                                ->setPath("/uploads/pictures/picture_1.jpg")
                         )
                         ->addPicture(
                             (new Picture())
-                                ->setFilePath("/uploads/pictures/picture_2.jpg")
+                                ->setPath("/uploads/pictures/picture_2.jpg")
                         )
                         ->addPicture(
                             (new Picture())
-                                ->setFilePath("/uploads/pictures/picture_3.jpg")
+                                ->setPath("/uploads/pictures/picture_3.jpg")
                         )
                         ->addVideo(
                             (new Video())

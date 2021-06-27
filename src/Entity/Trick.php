@@ -163,7 +163,7 @@ class Trick
 
     public function removePicture(?Picture $picture): self
     {
-        $filesystem = new Filesystem();
+        $filesystem = new Filesystem;
         if ($this->pictures->removeElement($picture)) {
             // set the owning side to null (unless already changed)
             if ($picture->getTrick() === $this) {
