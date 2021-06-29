@@ -27,11 +27,10 @@ class Picture
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $path;
+    private ?string $path = null;
 
     /**
      * @var UploadedFile|null
-     * @Assert\Image
      */
     private ?UploadedFile $file = null;
 

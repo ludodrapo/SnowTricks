@@ -6,20 +6,39 @@ use App\Entity\Category;
 use App\Entity\Trick;
 use App\Entity\Video;
 use App\Entity\Picture;
+use App\Entity\User;
 use DateTime;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+    protected $hasher;
+
+    public function __construct(UserPasswordHasherInterface $hasher)
+    {
+        $this->hasher = $hasher;
+    }
+
     public function load(ObjectManager $manager)
     {
+        for ($u = 1; $u <= 6; $u++) {
+            $user = new User;
+            $hash = $this->hasher->hashPassword($user, "password$u");
+            $manager->persist(
+                $user
+                    ->setEmail("user$u@gmail.com")
+                    ->setPassword($hash)
+                    ->setIdPhotoPath("/uploads/idPhotos/user$u.png")
+                    ->setScreenName("user$u")
+            );
+        }
+
         $index = 1; 
 
         for ($i = 1; $i <= 7; $i++) {
-
             $category = new Category;
-
             $manager->persist(
                 $category
                     ->setName('Categorie ' . $i)
@@ -27,7 +46,6 @@ class AppFixtures extends Fixture
             );
 
             for ($j = 1; $j <= 3; $j++) {
-
                 $manager->persist(
                     (new Trick())
                         ->setName('Trick ' . $index)
@@ -56,11 +74,9 @@ class AppFixtures extends Fixture
                                 ->setUrl("https://youtu.be/SQNc3VBOgEM")
                         )
                 );
-
                 $index++;
             }
         }
-
         $manager->flush();
     }
 }

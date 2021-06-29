@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!
+{% endblock %}
+
+{% block body %}
+	<section id="login">
+		<div class="container mt-5">
+			<div class="section-title">
+				<h3>Connexion</h3>
+				<form method="post">
+					{% if error %}
+                        {# instead of {{ error.messageKey|trans(error.messageData, 'security') }} : #}
+						<div class="alert alert-danger">
+                                Le mot de passe et/ou l'email de connexion n'a ou n'ont pas été reconnu(s). 
+                                Pour réinitialiser votre mot de passe, cliquez ici.
+                                Pour créer un compte, cliquez là.
+                        </div>
+					{% endif %}
+
+					{% if app.user %}
+						<div class="mb-3">
+							Vous êtes déjà connecté(e),
+							{{ app.user.screenName }}.<br/>
+							Peut-être souhaitez-vous vous
+							<a href="{{ path('security_logout') }}">déconnecter 
+							</a>
+							?
+						</div>
+
+					{% else %}
+
+					<h1 class="h3 mb-3 font-weight-normal">Pour vous connecter ...</h1>
+					<label for="inputEmail">Email</label>
+					<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+					<label for="inputPassword">Password</label>
+					<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+					<input
+					type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+					{# See https://symfony.com/doc/current/security/remember_me.html #}
+					{# <div class="checkbox mb-3">
+						<label>
+							<input type="checkbox" name="_remember_me"> Remember me
+						</label>
+					</div> #}
+
+					<button class="btn btn-lg btn-info my-5" type="submit">
+						Sign in
+					</button>
+                    {% endif %}
+				</form>
+			</div>
+		</div>
+	</section>
+{% endblock %}

@@ -37,4 +37,3 @@ services:
     App\EntityListener\:
         resource: '../src/EntityListener'
         tags: ['doctrine.orm.entity_listener']
-

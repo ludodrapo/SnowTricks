@@ -17,14 +17,7 @@ class PictureType extends AbstractType
     {
         $builder
             ->add('file', FileType::class, [
-                'label' => 'Photo (jpeg/jpg/png/webp)',
-                'required' => false,
-                'constraints' => [
-                    new Image([
-                        'allowPortrait' => false,
-                        'allowPortraitMessage' => "Votre image doit être au format paysage."
-                    ])
-                ]
+                'label' => 'Photo (jpeg/jpg/png/webp)'
             ]
         );
     }
