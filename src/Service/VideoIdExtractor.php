@@ -6,7 +6,7 @@ class VideoIdExtractor
 {
     /**
      * Allows you to extract the ID of any YouTube video
-     * in order to add it in a html embed video tag
+     * in order to add it in an html embed video tag
      * 
      * @param string $url
      * @return string

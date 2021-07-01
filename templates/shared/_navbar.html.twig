@@ -37,7 +37,7 @@
 						<a class="nav-link" href="{{ path('security_profile', {'id': app.user.id}) }}">Mon profil</a>
 					</li>
 					<li>
-						<a class="nav-link" href="{{ path('security_logout') }}">Se déconnecter</a>
+						<a class="nav-link" href="{{ path('security_logout') }}">Se déconnecter <i class="fas fa-sign-out-alt fa-2x"></i></a>
 					</li>
 				{% else %}
 					<li>

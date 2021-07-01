@@ -70,7 +70,7 @@ class SecurityController extends AbstractController
         EntityManagerInterface $em,
         FileUploader $fileUploader
     ): Response {
-        $user = new User();
+        $user = new User;
         $form = $this->createForm(SigninFormType::class, $user);
         $form->handleRequest($request);
 

@@ -52,9 +52,12 @@ class TrickController extends AbstractController
         if (!$trick) {
             throw $this->createNotFoundException("Désolé, ce trick n'existe pas ou plus.");
         }
+        
+        $comments = $trick->getComments();
 
         return $this->render('trick/show.html.twig', [
-            'trick' => $trick
+            'trick' => $trick,
+            'comments' => $comments
         ]);
     }
 
@@ -78,8 +81,6 @@ class TrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $trick->setSlug(strtolower($slugger->slug($trick->getName())));
-            $date = new DateTime();
-            $trick->setCreationDate($date);
             $em->persist($trick);
             $em->flush();
 

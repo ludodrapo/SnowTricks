@@ -60,7 +60,7 @@
 								{{ trick.category.name }}</li>
 							<li>
 								<strong>Auteur
-								</strong>: user.name</li>
+								</strong>: trick.user.screenName à ajouter ...</li>
 							<li>
 								<strong>Date de création
 								</strong>:
@@ -84,7 +84,7 @@
 				</div>
 			</div>
 
-			<div class="container">
+			<div class="container mt-5">
 				<div class="section-title" data-aos="fade-up">
 					<h2>Vidéos</h2>
 				</div>
@@ -92,6 +92,29 @@
 					{% for video in trick.videos %}
 						<div class="col-lg-4 col-md-6 mb-3" align="center">
 							<iframe src="{{ video.url|replace({'youtu.be': "www.youtube.com/embed"}) }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+
+			<div class="container mt-5">
+				<div class="section-title" data-aos="fade-up">
+					<h2>Commentaires</h2>
+				</div>
+				<div class="row" data-aos="fade-up" aos-delay="600">
+					{% for comment in comments %}
+						<div class="swiper-slide">
+							<div class="testimonial-wrap">
+								<div class="testimonial-item">
+									<img src="{{ asset(comment.user.idPhotoPath) }}" width="60" alt="">
+									<h5>{{ comment.user.screenName }} a écrit le {{ comment.creationDate|date("d/m/Y") }} à {{ comment.creationDate|date("H:i") }}</h5>
+									<p>
+										<i class="bx bxs-quote-alt-left quote-icon-left"></i>
+										{{ comment.content }}
+										<i class="bx bxs-quote-alt-right quote-icon-right"></i>
+									</p>
+								</div>
+							</div>
 						</div>
 					{% endfor %}
 				</div>
