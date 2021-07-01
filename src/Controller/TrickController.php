@@ -4,20 +4,17 @@ namespace App\Controller;
 
 use DateTime;
 use App\Entity\Trick;
-use App\Entity\Picture;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use App\Repository\CategoryRepository;
+use App\Service\VideoIdExtractor;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class TrickController extends AbstractController
 {

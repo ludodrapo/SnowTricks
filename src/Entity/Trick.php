@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TrickRepository;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -31,7 +30,7 @@ class Trick
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Ce champs ne peut être vide.")
-     * @Assert\Length(min=3, max=255, minMessage="Le nom du produit doit être d'au moins 3 caractères.")
+     * @Assert\Length(min=3, max=255, minMessage="Le nom du trick doit être d'au moins 3 caractères.")
      */
     private string $name;
 
@@ -60,7 +59,6 @@ class Trick
      * @var Collection<int, Picture>
      * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="trick", orphanRemoval=true, cascade={"persist"})
      * @Assert\Count(min=1, minMessage="Vous devez associer au moins une photo à votre trick.")
-     * @Assert\Valid
      */
     private Collection $pictures;
 
@@ -68,7 +66,6 @@ class Trick
      * @var Collection<int, Video>
      * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", orphanRemoval=true, cascade={"persist"})
      * @Assert\Count(min=1, minMessage="Vous devez associer au moins une vidéo à votre trick.")
-     * @Assert\Valid
      */
     private $videos;
 

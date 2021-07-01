@@ -7,6 +7,10 @@
 parameters:
     picturesDir: 'uploads/pictures'
     picturesAbsoluteDir: '%kernel.project_dir%/public/%picturesDir%'
+    idPhotosDir: 'uploads/idPhotos'
+    idPhotosAbsoluteDir: '%kernel.project_dir%/public/%idPhotosDir%'
+
+
 
 services:
     # default configuration for services in *this* file
@@ -38,3 +42,6 @@ services:
         resource: '../src/EntityListener'
         tags: ['doctrine.orm.entity_listener']
 
+    App\Service\FileUploader:
+        arguments:
+            $targetDirectory: '%idPhotosDir%'

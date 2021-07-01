@@ -9,7 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraints\File;
 
 class PictureType extends AbstractType
 {
@@ -18,13 +18,15 @@ class PictureType extends AbstractType
         $builder
             ->add('file', FileType::class, [
                 'label' => 'Photo (jpeg/jpg/png/webp)',
-                'required' => false,
-                'constraints' => [
-                    new Image([
-                        'allowPortrait' => false,
-                        'allowPortraitMessage' => "Votre image doit être au format paysage."
-                    ])
-                ]
+                'required' => false
+                // 'constraints' => [
+                //     new File([
+                //         'maxSize' => '5M',
+                //         'maxSizeMessage' => "Ce fichier est trop lourd car il dépasse les 5 Mo.",
+                //         'mimeTypes' => 'image/*',
+                //         'mimeTypesMessage' => "Ce fichier n'est pas une image"
+                //     ])
+                // ]
             ]
         );
     }

@@ -24,11 +24,6 @@ class Video
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Une Url vers la vidéo doit être saisie.")
-     * @Assert\Url(
-     *    message="L'adresse {{ value }} n'est pas une url valide.",
-     *    protocols = {"http", "https"}
-     * )
-     * @Assert\Length(min=8, max=255, minMessage="L'Url vers la vidéo doit être composée d'au moins 8 caractères.")
      */
     private string $url;
 

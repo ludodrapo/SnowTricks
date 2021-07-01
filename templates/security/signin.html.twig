@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription
+{% endblock %}
+
+{% block body %}
+	<section id="signin">
+		<div class="container mt-5">
+			{% for flashError in app.flashes('verify_email_error') %}
+				<div class="alert alert-danger" role="alert">{{ flashError }}</div>
+			{% endfor %}
+
+			<h1>Pour vous inscrire ...</h1>
+
+			{{ form_start(signinFormView) }}
+			{{ form_row(signinFormView.email) }}
+			{{ form_row(signinFormView.screenName) }}
+			{{ form_row(signinFormView.plainPassword) }}
+			{{ form_row(signinFormView.idPhoto) }}
+
+			{{ form_row(signinFormView.agreeTerms) }}
+
+			<button type="submit" class="btn form-submit-btn">C'est bon : je m'inscris !</button>
+			{{ form_end(signinFormView) }}
+		</div>
+	</section>
+{% endblock %}

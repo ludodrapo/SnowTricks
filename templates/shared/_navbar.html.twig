@@ -11,10 +11,10 @@
 		<nav id="navbar" class="navbar">
 			<ul>
 				<li>
-					<a class="nav-link scrollto active" href="{{ path('home') }}">Accueil</a>
+					<a class="nav-link active" href="{{ path('home') }}">Accueil</a>
 				</li>
 				<li>
-					<a class="nav-link scrollto" href="#">Un peu d'histoire</a>
+					<a class="nav-link" href="#">Un peu d'histoire</a>
 				</li>
 				<li class="dropdown">
 					<a href="#">
@@ -29,12 +29,24 @@
 						{% endfor %}
 					</ul>
 				</li>
-				<li>
-					<a class="nav-link scrollto" href="{{ path('trick_create') }}">Ajouter</a>
-				</li>
-				<li>
-					<a class="getstarted scrollto" href="#">Je me connecte ...</a>
-				</li>
+				{% if app.user %}
+					<li>
+						<a class="nav-link" href="{{ path('trick_create') }}">Ajouter un trick</a>
+					</li>
+					<li>
+						<a class="nav-link" href="{{ path('security_profile', {'id': app.user.id}) }}">Mon profil</a>
+					</li>
+					<li>
+						<a class="nav-link" href="{{ path('security_logout') }}">Se déconnecter</a>
+					</li>
+				{% else %}
+					<li>
+						<a class="nav-link" href="{{ path('security_login') }}">Connexion <i class="fas fa-sign-in-alt fa-2x"></i></a>
+					</li>
+					<li>
+						<a class="nav-link" href="{{ path('security_signin') }}">Inscription <i class="fas fa-user-plus fa-2x"></i></a>
+					</li>
+				{% endif %}
 			</ul>
 			<i class="bi bi-list mobile-nav-toggle"></i>
 		</nav>

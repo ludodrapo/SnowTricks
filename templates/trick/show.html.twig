@@ -1,7 +1,6 @@
 {% extends "base.html.twig" %}
 
 {% block title %}
-	Snowtricks -
 	{{ trick.name }}
 {% endblock %}
 
@@ -66,12 +65,14 @@
 								<strong>Date de création
 								</strong>:
 								{{ trick.creationDate|date("d/m/Y") }}</li>
-							<li>
-								<a class="getstarted scrollto" href="{{ path('trick_edit', { 'id': trick.id }) }}">
-									<i class="fas fa-pen"></i>
-									Modifier ce trick
-								</a>
-							</li>
+							{% if app.user %}
+								<li>
+									<a class="getstarted scrollto" href="{{ path('trick_edit', { 'id': trick.id }) }}">
+										<i class="fas fa-pen"></i>
+										Modifier/supprimer ce trick
+									</a>
+								</li>
+							{% endif %}
 						</ul>
 					</div>
 					<div class="portfolio-description">

@@ -27,13 +27,12 @@ class Picture
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $path;
+    private ?string $path = null;
 
     /**
      * @var UploadedFile|null
-     * @Assert\Image
      */
-    private ?UploadedFile $file = null;
+    private UploadedFile $file;
 
     /**
      * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="pictures")

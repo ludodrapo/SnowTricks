@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block title %}
-	Bienvenue sur SnowTricks.Com
+	Bienvenue !
 {% endblock %}
 
 {% block body %}
@@ -14,7 +14,11 @@
 					<h1 data-aos="fade-up">SnowTricks.Com</h1>
 					<h2 data-aos="fade-up" data-aos-delay="400">Upgrade Your Style</h2>
 					<div data-aos="fade-up" data-aos-delay="800">
-						<a href="#" class="btn-get-started scrollto">Je me connecte ...</a>
+					{% if app.user %}
+						<h3>Bienvenue {{ app.user.screenName|capitalize }} !</h3>
+					{% else %}
+						<a href="{{ path('security_login') }}" class="btn-get-started scrollto">Je me connecte ...</a>
+					{% endif %}
 					</div>
 				</div>
 				<div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left" data-aos-delay="200">
@@ -52,10 +56,13 @@
 	<!-- ======= Last created tricks Section ======= -->
 	<section id="last-tricks" class="more-services">
 		<div class="container">
+			<div class="section-title" data-aos="fade-up">
+				<h2>Derniers tricks</h2>
+			</div>
 
 			<div class="row">
 
-				{% for trick in tricks %}
+				{% for trick in tricks|reverse %}
 					{% include "trick/_trickCard.html.twig" %}
 				{% endfor %}
 
