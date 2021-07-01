@@ -25,7 +25,7 @@ class Video
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Une Url vers la vidéo doit être saisie.")
      */
-    private ?string $url = null;
+    private string $url;
 
     /**
      * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="videos")

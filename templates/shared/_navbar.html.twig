@@ -34,11 +34,17 @@
 						<a class="nav-link" href="{{ path('trick_create') }}">Ajouter un trick</a>
 					</li>
 					<li>
-						<a class="getstarted" href="{{ path('security_logout') }}">Se déconnecter</a>
+						<a class="nav-link" href="{{ path('security_profile', {'id': app.user.id}) }}">Mon profil</a>
+					</li>
+					<li>
+						<a class="nav-link" href="{{ path('security_logout') }}">Se déconnecter</a>
 					</li>
 				{% else %}
 					<li>
-						<a class="getstarted" href="{{ path('security_login') }}">Je me connecte ...</a>
+						<a class="nav-link" href="{{ path('security_login') }}">Connexion <i class="fas fa-sign-in-alt fa-2x"></i></a>
+					</li>
+					<li>
+						<a class="nav-link" href="{{ path('security_signin') }}">Inscription <i class="fas fa-user-plus fa-2x"></i></a>
 					</li>
 				{% endif %}
 			</ul>

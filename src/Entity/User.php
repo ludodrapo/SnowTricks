@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -11,6 +12,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(fields={"email"}, message="Cet email existe déjà, peut-être souhaitez vous réinitialiser votre mot de passe ?")
+ * @UniqueEntity(fields={"screenName"}, message="Ce nom d'utilisateur existe déjà, merci d'en saisir un différent.")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -40,7 +43,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $IdPhotoPath;
+    private ?string $IdPhotoPath = null;
 
     /**
      * @var UploadedFile|null
@@ -49,9 +52,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?UploadedFile $file = null;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $screenName;
+    private ?string $screenName = null;
 
 
     public function getId(): ?int
@@ -139,8 +142,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials()
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     /**

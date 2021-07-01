@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	Votre profil
+{% endblock %}
+
+{% block body %}
+	<section id="profile" class="features mt-5">
+		<div class="container">
+			<div class="section-title" data-aos="fade-up">
+				<h2>Profil de
+					{{ user.screenName }}
+					!
+				</h2>
+			</div>
+			<div class="row mt-3">
+				<div class="col-md-6" align="center">
+					{{ user.email }}
+				</div>
+				<div class="col-md-6" align="center">
+					<img src="{{ asset(user.idPhotoPath) }}" alt="" width="100" height="100">
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

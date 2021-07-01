@@ -13,6 +13,11 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class PictureListener
 {
     /**
+     * @var SluggerInterface
+     */
+    private $slugger;
+
+    /**
      * @var string
      */
     private string $picturesDir;
@@ -26,7 +31,6 @@ class PictureListener
      * PictureListener constructor
      * @param string $picturesDir
      * @param string $picturesAbsoluteDir
-     * @param SluggerInterface $slugger
      */
     public function __construct(string $picturesDir, string $picturesAbsoluteDir, SluggerInterface $slugger)
     {
@@ -64,7 +68,8 @@ class PictureListener
         if ($file instanceof UploadedFile) {
             
             $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $filename = $originalFilename . '-' . uniqid() . '.' . $file->guessClientExtension();
+            $safeFilename = strtolower($this->slugger->slug($originalFilename));
+            $filename = $safeFilename . '-' . uniqid() . '.' . $file->guessClientExtension();
 
             $file->move($this->picturesAbsoluteDir, $filename);
 
