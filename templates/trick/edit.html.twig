@@ -6,27 +6,26 @@
 {% endblock %}
 
 {% block body %}
-
 	<section id="trick_form" class="portfolio-details mt-5">
 		<div class="container">
-			<h2>{{ trick.name }}</h2>
+			<h2>{{ trick.name }}
+				<a href="{{ path('trick_delete', {id: trick.id}) }}">
+					<button class="btn btn-danger">
+						<i class="fas fa-trash-alt"></i>
+					</button>
+				</a>
+			</h2>
 
 			{{ form_start(formView) }}
+			{{ form_widget(formView._token)}}
 
-			<div class="row mb-3">
-				<div class="col-md-6">
-					{{ form_row(formView.name) }}
-					{{ form_row(formView.category) }}
-				</div>
-				<div class="col-md-6">
-					{{ form_row(formView.description) }}
-				</div>
-			</div>
+			{{ include("trick/_trickForm.html.twig", {form: formView}) }}
+
 			<button type="submit">
 				<i class="fas fa-save"></i>
 				Enregistrer les modifications
 			</button>
-			{{ form_end(formView) }}
+			{{ form_end(formView, {render_rest: false}) }}
 		</div>
 	</section>
 

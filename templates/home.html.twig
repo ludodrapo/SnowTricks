@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block title %}
-	Bienvenue sur SnowTricks.Com
+	Bienvenue !
 {% endblock %}
 
 {% block body %}
@@ -14,7 +14,11 @@
 					<h1 data-aos="fade-up">SnowTricks.Com</h1>
 					<h2 data-aos="fade-up" data-aos-delay="400">Upgrade Your Style</h2>
 					<div data-aos="fade-up" data-aos-delay="800">
-						<a href="#" class="btn-get-started scrollto">Je me connecte ...</a>
+					{% if app.user %}
+						<h3>Bienvenue {{ app.user.screenName|capitalize }} !</h3>
+					{% else %}
+						<a href="{{ path('security_login') }}" class="btn-get-started scrollto">Je me connecte ...</a>
+					{% endif %}
 					</div>
 				</div>
 				<div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left" data-aos-delay="200">
@@ -31,7 +35,7 @@
 		<div class="container">
 			<div class="section-title" data-aos="fade-up">
 				<h2>Catégories</h2>
-				<p>Vous pouvez rechercher votre tricks par catégorie</p>
+				<p>Vous pouvez aussi faire une recherche par catégorie de tricks</p>
 			</div>
 
 			<div class="row" data-aos="fade-up" data-aos-delay="300">
@@ -39,7 +43,7 @@
 					<div class="col-6 col-lg-3 col-md-4 mt-3">
 						<div class="icon-box">
 							<h3>
-								<a href="">{{ category.name }}</a>
+								<a href="{{ path('trick_category', {'slug': category.slug}) }}">{{ category.name }}</a>
 							</h3>
 						</div>
 					</div>
@@ -49,35 +53,23 @@
 	</section>
 	<!-- End Category Section -->
 
-	<!-- ======= More Services Section ======= -->
+	<!-- ======= Last created tricks Section ======= -->
 	<section id="last-tricks" class="more-services">
 		<div class="container">
+			<div class="section-title" data-aos="fade-up">
+				<h2>Derniers tricks</h2>
+			</div>
 
 			<div class="row">
 
-				{% for trick in tricks %}
-					<div class="col-lg-6 d-flex align-items-stretch mt-4">
-						<div class="card" style='background-image: url("assets/img/pictures/picture_1.jpg");' data-aos="fade-up" data-aos-delay="100">
-							<div class="card-body">
-								<h5 class="card-title">
-									<a href="{{ path('trick_show', { 'category_slug': trick.category.slug,'slug': trick.slug }) }}">{{ trick.name }}</a>
-								</h5>
-								<p class="card-text">{{ trick.description[:100] ~ (trick.description|length > 100 ? '...') }}</p>
-								<div class="read-more">
-									<a href="{{ path('trick_show', { 'category_slug': trick.category.slug,'slug': trick.slug }) }}">
-										<i class="bi bi-arrow-right"></i>
-										Voir ce trick</a>
-								</div>
-							</div>
-						</div>
-					</div>
+				{% for trick in tricks|reverse %}
+					{% include "trick/_trickCard.html.twig" %}
 				{% endfor %}
 
 			</div>
 
 		</div>
 	</section>
-	<!-- End More Services Section -->
-
-
+	<!-- End last created Section -->
+	
 {% endblock %}

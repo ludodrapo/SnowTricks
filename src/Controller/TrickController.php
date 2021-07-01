@@ -2,28 +2,48 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Trick;
 use App\Form\TrickType;
-use App\Entity\Category;
-use Doctrine\ORM\EntityManager;
 use App\Repository\TrickRepository;
-use DateTime;
+use App\Repository\CategoryRepository;
+use App\Service\VideoIdExtractor;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 
 class TrickController extends AbstractController
 {
     /**
-     * @Route("/{category_slug}/{slug}", name="trick_show")
+     * @Route("/{slug}", name="trick_category", priority=-1)
      */
-    public function show($slug, TrickRepository $trickRepository)
+    public function category($slug, CategoryRepository $categoryRepository): Response
+    {
+        $category = $categoryRepository->findOneBy([
+            'slug' => $slug
+        ]);
+
+        if (!$category) {
+            throw $this->createNotFoundException("La catégorie demandée n'existe pas ou plus.");
+        }
+
+        return $this->render('trick/category.html.twig', [
+            'slug' => $slug,
+            'category' => $category
+        ]);
+    }
+
+    /**
+     * @Route("/{category_slug}/{slug}", name="trick_show")
+     * @param [string] $slug
+     * @param TrickRepository $trickRepository
+     * @return Response
+     */
+    public function show($slug, TrickRepository $trickRepository): Response
     {
         $trick = $trickRepository->findOneBy([
             'slug' => $slug
@@ -40,13 +60,19 @@ class TrickController extends AbstractController
 
     /**
      * @Route("admin/trick/create", name="trick_create")
+     * @param Request $request
+     * @param SluggerInterface $slugger
+     * @param EntityManagerInterface $em
+     * @return Response
      */
-    public function create(Request $request, SluggerInterface $slugger, EntityManagerInterface $em)
-    {
+    public function create(
+        Request $request,
+        SluggerInterface $slugger,
+        EntityManagerInterface $em
+    ): Response {
+
         $trick = new Trick;
-
         $form = $this->createForm(TrickType::class, $trick);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -63,15 +89,19 @@ class TrickController extends AbstractController
             ]);
         }
 
-        $formView = $form->createView();
-
         return $this->render('trick/create.html.twig', [
-            'formView' => $formView
+            'formView' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("admin/trick/edit/{id}", name="trick_edit")
+     * @Route("admin/trick/{id}/edit", name="trick_edit")
+     * @param [int] $id
+     * @param Request $request
+     * @param TrickRepository $trickRepository
+     * @param SluggerInterface $slugger
+     * @param EntityManagerInterface $em
+     * @return Response
      */
     public function edit(
         $id,
@@ -79,7 +109,7 @@ class TrickController extends AbstractController
         TrickRepository $trickRepository,
         SluggerInterface $slugger,
         EntityManagerInterface $em
-    ) {
+    ): Response {
         $trick = $trickRepository->find($id);
 
         $form = $this->createForm(TrickType::class, $trick);
@@ -104,5 +134,31 @@ class TrickController extends AbstractController
             'formView' => $formView,
             'trick' => $trick
         ]);
+    }
+
+    /**
+     * @Route("/admin/trick/{id}/delete", name="trick_delete")
+     * @param TrickRepository $trickRepository
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    public function delete(
+        TrickRepository $trickRepository,
+        EntityManagerInterface $em,
+        $id
+    ): Response {
+
+        $filesystem = new Filesystem;
+        $trick = $trickRepository->find($id);
+        $pictures = $trick->getPictures();
+        
+        foreach($pictures as $picture) {
+            $filesystem->remove($picture->getPath());
+        }
+
+        $em->remove($trick);
+        $em->flush();
+
+        return $this->redirectToRoute('home');
     }
 }

@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>
-			{% block title %}SnowTricks.Com
-			{% endblock %}
+			Snowtricks -
+			{% block title %}{% endblock %}
 		</title>
 
 		<!-- Favicons -->
@@ -38,7 +38,20 @@
 
 			{% include "shared/_navbar.html.twig" %}
 
+			{% if app.flashes %}
+				<div class="container mt-5">
+					{% for rubrique, messages in app.flashes %}
+						<div class="alert alert-{{rubrique}}">
+							{% for message in messages %}
+								<p>{{ message }}</p>
+							{% endfor %}
+						</div>
+					{% endfor %}
+				</div>
+			{% endif %}
+
 			{% block body %}{% endblock %}
+
 
 			{% include "shared/_footer.html.twig" %}
 
@@ -58,5 +71,6 @@
 
 			<!-- Template Main JS File -->
 			<script src="{{ asset('assets/js/main.js') }}"></script>
+			<script src="{{ asset('assets/js/myScript.js') }}"></script>
 		</body>
 	</html>
