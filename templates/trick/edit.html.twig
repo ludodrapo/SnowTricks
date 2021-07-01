@@ -1,0 +1,32 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	Modification du
+	{{ trick.name }}
+{% endblock %}
+
+{% block body %}
+	<section id="trick_form" class="portfolio-details mt-5">
+		<div class="container">
+			<h2>{{ trick.name }}
+				<a href="{{ path('trick_delete', {id: trick.id}) }}">
+					<button class="btn btn-danger">
+						<i class="fas fa-trash-alt"></i>
+					</button>
+				</a>
+			</h2>
+
+			{{ form_start(formView) }}
+			{{ form_widget(formView._token)}}
+
+			{{ include("trick/_trickForm.html.twig", {form: formView}) }}
+
+			<button type="submit">
+				<i class="fas fa-save"></i>
+				Enregistrer les modifications
+			</button>
+			{{ form_end(formView, {render_rest: false}) }}
+		</div>
+	</section>
+
+{% endblock %}

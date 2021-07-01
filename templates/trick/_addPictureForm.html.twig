@@ -1,0 +1,15 @@
+<div class="row item mb-3">
+	<div class="col-10">
+		{% if formView.vars.data is not null and formView.vars.data.path is not null %}
+			<img src="{{ asset(formView.vars.data.path)}}" alt="{{ formView.vars.data.path|replace({'/uploads/pictures/': 'Photo de :'}) }}" width="150" height="100">
+			{{ form_widget(formView, { 'attr': {'style': 'display:none'} }) }}
+		{% else %}
+			{{ form_widget(formView) }}
+		{% endif %}
+	</div>
+	<div class="col-2">
+		<button type="button" class="btn btn-danger btn-remove">
+			<i class="fas fa-trash-alt"></i>
+		</button>
+	</div>
+</div>

@@ -1,0 +1,25 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	Nouveau trick
+{% endblock %}
+
+{% block body %}
+	<section id="trick_form" class="mt-5">
+		<div class="container">
+			<h2>Nouveau trick</h2>
+			{{ form_start(formView) }}
+			{{ form_widget(formView._token)}}
+
+			{{ include("trick/_trickForm.html.twig", {form: formView}) }}
+			
+			<divclass="row">
+				<button type="submit">
+					<i class="fas fa-save"></i>
+					Créer le trick
+				</button>
+			</div>
+			{{ form_end(formView, {render_rest: false}) }}
+		</div>
+	</section>
+{% endblock %}

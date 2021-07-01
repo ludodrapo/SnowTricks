@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page de connexion
+{% endblock %}
+
+{% block body %}
+	<section id="login">
+		<div class="container mt-5">
+			<div class="section-title">
+				<h3>Connexion</h3>
+			</div>
+			{{ form_start(formView) }}
+			{{ form_row(formView.email) }}
+			{{ form_row(formView.password) }}
+			<button type="submit" class="btn btn-info">Connexion</button>
+			{{ form_end(formView )}}
+		</div>
+	</section>
+{% endblock %}

@@ -2,15 +2,6 @@
  * CSS file to override the template's file when needed
  */
 
-body, h1, h2, h3, h4, h5, h6 {
-    font-family: "Shadows Into Light Two", cursive;
-    font-size: larger;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    text-transform: uppercase;
-}
-
 /* category */
 
 .clients a:hover {
@@ -19,4 +10,29 @@ h1, h2, h3, h4, h5, h6 {
 
 .clients {
     text-transform: uppercase;
+}
+
+.form-submit-btn {
+    background: #3498db;
+    padding: 8px 25px;
+    border-radius: 50px;
+    color: #fff;
+}
+.form-submit-btn:hover {
+    color: #fff;
+    background: #4aa3df;
+}
+
+/* submit */
+#trick_form button[type="submit"] {
+    background: #3498db;
+    padding: 8px 25px;
+    margin-left: 30px;
+    border-radius: 50px;
+    color: #fff;
+  }
+  
+#trick_form button[type="submit"]:hover {
+    color: #fff;
+    background: #4aa3df;
 }

@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>
-			{% block title %}Welcome!
-			{% endblock %}
+			Snowtricks -
+			{% block title %}{% endblock %}
 		</title>
 
 		<!-- Favicons -->
@@ -12,9 +12,11 @@
 		<link
 		href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
+		<!-- Font Awesome icons (free version)-->
+		<script src="https://kit.fontawesome.com/c5aa82aba4.js" crossorigin="anonymous"></script>
 		<!-- Google Fonts -->
 		<link
-		href="https://fonts.googleapis.com/css?family=Shadows+Into+Light+Two:300,300i,400,400i,600,600i,700,700i|Amatic+SC:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+		href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
 		<!-- Vendor CSS Files -->
 
@@ -36,7 +38,20 @@
 
 			{% include "shared/_navbar.html.twig" %}
 
+			{% if app.flashes %}
+				<div class="container mt-5">
+					{% for rubrique, messages in app.flashes %}
+						<div class="alert alert-{{rubrique}}">
+							{% for message in messages %}
+								<p>{{ message }}</p>
+							{% endfor %}
+						</div>
+					{% endfor %}
+				</div>
+			{% endif %}
+
 			{% block body %}{% endblock %}
+
 
 			{% include "shared/_footer.html.twig" %}
 
@@ -56,5 +71,6 @@
 
 			<!-- Template Main JS File -->
 			<script src="{{ asset('assets/js/main.js') }}"></script>
+			<script src="{{ asset('assets/js/myScript.js') }}"></script>
 		</body>
 	</html>
