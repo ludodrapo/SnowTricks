@@ -63,11 +63,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $comments;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="user")
-     */
-    private $tricks;
-
     public function __construct()
     {
         $this->comments = new ArrayCollection();

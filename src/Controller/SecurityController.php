@@ -39,19 +39,15 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/login", name="security_login")
-     * @param AuthenticationUtils $authenticationUtils
+     * @param AuthenticationUtils $utils
      * @return Response
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $utils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
-
         // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
+        $error = $utils->getLastAuthenticationError();
         // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+        $lastUsername = $utils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
@@ -70,6 +66,7 @@ class SecurityController extends AbstractController
         EntityManagerInterface $em,
         FileUploader $fileUploader
     ): Response {
+        
         $user = new User;
         $form = $this->createForm(SigninFormType::class, $user);
         $form->handleRequest($request);

@@ -55,6 +55,7 @@ class AppFixtures extends Fixture
                         ->setSlug('trick-' . $trickIndex)
                         ->setDescription("Courte description de comment réaliser ce 'fake' trick, histoire d'avoir quelque chose dans la description. Et aussi parce que les lorem ipsum, ça suffit !")
                         ->setCategory($category)
+                        ->setUser($user)
                         ->addPicture(
                             (new Picture())
                                 ->setPath("/uploads/pictures/picture_1.jpg")

@@ -4,17 +4,21 @@ namespace App\Controller;
 
 use DateTime;
 use App\Entity\Trick;
+use App\Entity\Comment;
 use App\Form\TrickType;
+use App\Form\CommentType;
 use App\Repository\TrickRepository;
 use App\Repository\CategoryRepository;
-use App\Service\VideoIdExtractor;
+use App\Repository\UserRepository;
+use App\Service\UrlToEmbedTransformer;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class TrickController extends AbstractController
 {
@@ -40,24 +44,47 @@ class TrickController extends AbstractController
     /**
      * @Route("/{category_slug}/{slug}", name="trick_show")
      * @param [string] $slug
+     * @param UserRepository $userRepository
      * @param TrickRepository $trickRepository
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
-    public function show($slug, TrickRepository $trickRepository): Response
-    {
+    public function show(
+        $slug,
+        UserRepository $userRepository,
+        TrickRepository $trickRepository,
+        Request $request,
+        EntityManagerInterface $em,
+        AuthenticationUtils $authenticationUtils
+    ): Response {
+
         $trick = $trickRepository->findOneBy([
             'slug' => $slug
         ]);
 
+        $comments = $trick->getComments();
+
         if (!$trick) {
             throw $this->createNotFoundException("Désolé, ce trick n'existe pas ou plus.");
         }
-        
-        $comments = $trick->getComments();
+
+        $comment = new Comment;
+        $commentForm = $this->createForm(CommentType::class, $comment);
+        $commentForm->handleRequest($request);
+
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $comment->setTrick($trick);
+            $comment->setUser($userRepository->findOneBy(['email' => $authenticationUtils->getLastUsername()]));
+            $em->persist($comment);
+            $em->flush();
+        }
 
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
-            'comments' => $comments
+            'comments' => $comments,
+            'commentFormView' => $commentForm->createView()
         ]);
     }
 
@@ -66,12 +93,18 @@ class TrickController extends AbstractController
      * @param Request $request
      * @param SluggerInterface $slugger
      * @param EntityManagerInterface $em
+     * @param UserRepository $userRepository
+     * @param AuthenticationUtils $authenticationUtils
+     * @param UrlToEmbedTransformer $transformer
      * @return Response
      */
     public function create(
         Request $request,
         SluggerInterface $slugger,
-        EntityManagerInterface $em
+        UserRepository $userRepository,
+        EntityManagerInterface $em,
+        AuthenticationUtils $authenticationUtils,
+        UrlToEmbedTransformer $transformer
     ): Response {
 
         $trick = new Trick;
@@ -81,6 +114,12 @@ class TrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $trick->setSlug(strtolower($slugger->slug($trick->getName())));
+            $trick->setUser($userRepository->findOneBy(['email' => $authenticationUtils->getLastUsername()]));
+
+            foreach($trick->getVideos() as $video) {
+                $video->setUrl($transformer->urlToEmbed($video->getUrl()));
+            }
+
             $em->persist($trick);
             $em->flush();
 
@@ -102,14 +141,18 @@ class TrickController extends AbstractController
      * @param TrickRepository $trickRepository
      * @param SluggerInterface $slugger
      * @param EntityManagerInterface $em
+     * @param UrlToEmbedTransformer $transformer
      * @return Response
      */
     public function edit(
         $id,
         Request $request,
         TrickRepository $trickRepository,
+        UserRepository $userRepository,
         SluggerInterface $slugger,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        AuthenticationUtils $authenticationUtils,
+        UrlToEmbedTransformer $transformer
     ): Response {
         $trick = $trickRepository->find($id);
 
@@ -120,7 +163,11 @@ class TrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $trick->setSlug(strtolower($slugger->slug($trick->getName())));
-
+            $trick->setUser($userRepository->findOneBy(['email' => $authenticationUtils->getLastUsername()]));
+                        
+            foreach($trick->getVideos() as $video) {
+                $video->setUrl($transformer->urlToEmbed($video->getUrl()));
+            }
             $em->flush();
 
             return $this->redirectToRoute('trick_show', [
@@ -152,8 +199,8 @@ class TrickController extends AbstractController
         $filesystem = new Filesystem;
         $trick = $trickRepository->find($id);
         $pictures = $trick->getPictures();
-        
-        foreach($pictures as $picture) {
+
+        foreach ($pictures as $picture) {
             $filesystem->remove($picture->getPath());
         }
 

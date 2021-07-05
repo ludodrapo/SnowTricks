@@ -69,12 +69,17 @@ class Trick
      * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", orphanRemoval=true, cascade={"persist"})
      * @Assert\Count(min=1, minMessage="Vous devez associer au moins une vidéo à votre trick.")
      */
-    private Collection $videos;
+    private $videos;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true)
      */
-    private Collection $comments;
+    private $comments;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
+     */
+    private User $user;
 
     public function __construct()
     {
@@ -237,6 +242,18 @@ class Trick
                 $comment->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

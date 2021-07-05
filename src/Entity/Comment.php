@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CommentRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
@@ -20,8 +21,9 @@ class Comment
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(min=3, minMessage="Votre commentaire doit être d'au moins 3 caractères.")
      */
-    private $content;
+    private ?string $content = null;
 
     /**
      * @ORM\Column(type="datetime")

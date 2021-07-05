@@ -51,6 +51,7 @@ class SigninFormType extends AbstractType
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
+                        'maxSizeMessage' => "Ce fichier est trop lourd, il faudrait evisager de le compresser ou d'en réduire la taille.",
                         'mimeTypes' => [
                             'image/*'
                         ],

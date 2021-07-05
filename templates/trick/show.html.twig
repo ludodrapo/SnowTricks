@@ -60,18 +60,58 @@
 								{{ trick.category.name }}</li>
 							<li>
 								<strong>Auteur
-								</strong>: trick.user.screenName à ajouter ...</li>
+								</strong>:
+								{{ trick.user.screenName }}</li>
 							<li>
 								<strong>Date de création
 								</strong>:
 								{{ trick.creationDate|date("d/m/Y") }}</li>
+
 							{% if app.user %}
+								{% if comments|length == 0 %}
+									<li>
+										<strong>Nombre de commentaires
+										</strong>: ... 0 ! Mais vous avez la possibilité d'en laisser un
+										<a href="#comments">
+											ici</a>.</li>
+								{% else %}
+									<li>
+										<strong>Nombre de commentaires
+										</strong>:
+										{{ comments|length }}
+										... sans compter celui que vous pouvez laisser
+										<a href="#comments">
+											ici</a>.</li>
+								{% endif %}
 								<li>
 									<a class="getstarted scrollto" href="{{ path('trick_edit', { 'id': trick.id }) }}">
 										<i class="fas fa-pen"></i>
 										Modifier/supprimer ce trick
 									</a>
 								</li>
+							{% else %}
+								{% if comments|length == 0 %}
+									<li>
+										<strong>Nombre de commentaires
+										</strong>: ... 0 ! Mais vous avez la possibilité d'en laisser un une fois
+										<a href="{{ path('security_login') }}">inscrit(e)</a>
+										et
+										<a href="{{ path('security_login') }}">connecté(e)</a>
+										.</li>
+								{% else %}
+									<li>
+										<strong>Nombre de commentaires
+										</strong>:
+										{{ comments|length }}
+										... sans compter celui que vous pouvez laisser une fois
+										<a href="{{ path('security_login') }}">inscrit(e)</a>
+										et
+										<a href="{{ path('security_login') }}">connecté(e)</a>
+										.
+									</li>
+								{% endif %}
+
+
 							{% endif %}
 						</ul>
 					</div>
@@ -91,23 +131,52 @@
 				<div class="row" data-aos="fade-up" aos-delay="600">
 					{% for video in trick.videos %}
 						<div class="col-lg-4 col-md-6 mb-3" align="center">
-							<iframe src="{{ video.url|replace({'youtu.be': "www.youtube.com/embed"}) }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							<iframe src="{{ video.url }}" title="Video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 						</div>
 					{% endfor %}
 				</div>
 			</div>
 
-			<div class="container mt-5">
+			<div id="comments" class="container mt-5">
 				<div class="section-title" data-aos="fade-up">
 					<h2>Commentaires</h2>
 				</div>
+
+				{% if app.user %}
+
+					<div class="row mb-5" data-aos="fade-up" aos-delay="300">
+						<h5>N'hésitez pas à commenter ce trick,
+							{{ app.user.screenName|capitalize }}
+							!</h5>
+						{{ form_start(commentFormView) }}
+						{{ form_widget(commentFormView.content) }}
+						<button class="form-submit-btn mt-3">C'est ça qu'est-ce que j'veux dire !</button>
+						{{ form_end(commentFormView) }}
+					</div>
+
+				{% else %}
+
+					<div class="row mb-5" data-aos="fade-up" aos-delay="300">
+						<h5>N'hésitez pas à vous
+							<a href="{{ path('security_login') }}">connecter</a>
+							ou vous
+							<a href="{{ path('security_signin') }}">inscrire</a>
+							si vous souhaitez commenter ce trick.</h5>
+					</div>
+
+				{% endif %}
+
 				<div class="row" data-aos="fade-up" aos-delay="600">
-					{% for comment in comments %}
+					{% for comment in comments|reverse %}
 						<div class="swiper-slide">
 							<div class="testimonial-wrap">
-								<div class="testimonial-item">
-									<img src="{{ asset(comment.user.idPhotoPath) }}" width="60" alt="">
-									<h5>{{ comment.user.screenName }} a écrit le {{ comment.creationDate|date("d/m/Y") }} à {{ comment.creationDate|date("H:i") }}</h5>
+								<div class="portfolio-info">
+									<img src="{{ asset(comment.user.idPhotoPath) }}" width="50" alt="">
+									<h5>{{ comment.user.screenName }}
+										a écrit le
+										{{ comment.creationDate|date("d/m/Y") }}
+										à
+										{{ comment.creationDate|date("H:i:s") }}</h5>
 									<p>
 										<i class="bx bxs-quote-alt-left quote-icon-left"></i>
 										{{ comment.content }}
@@ -120,8 +189,8 @@
 				</div>
 			</div>
 
+
 		</div>
 	</section>
 	<!-- End Portfolio Details Section -->
-
 {% endblock %}
