@@ -130,9 +130,16 @@
 				</div>
 				<div class="row" data-aos="fade-up" aos-delay="600">
 					{% for video in trick.videos %}
-						<div class="col-lg-4 col-md-6 mb-3" align="center">
-							<iframe src="{{ video.url }}" title="Video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-						</div>
+						{# {% if 'facebook' in video.url %} TO USE FACEBOOK VIDEOS TOO
+							<div id="fb-root" class="col-lg-4 col-md-6 mb-3" align="center">
+								<script async defer src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2"></script>
+								<div class="fb-video" data-href="{{ video.url }}" data-allowfullscreen="true"></div>
+							</div>
+						{% else %} #}
+							<div class="col-lg-4 col-md-6 mb-3" align="center">
+								<iframe src="{{ video.url }}" title="Video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							</div>
+						{# {% endif %} #}
 					{% endfor %}
 				</div>
 			</div>

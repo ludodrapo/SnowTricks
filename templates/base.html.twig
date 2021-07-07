@@ -38,20 +38,19 @@
 
 			{% include "shared/_navbar.html.twig" %}
 
-			{% if app.flashes %}
-				<div class="container mt-5">
-					{% for rubrique, messages in app.flashes %}
+			{% for rubrique, messages in app.flashes %}
+				<section id="flash-message">
+					<div class="container mt-5 mb-0">
 						<div class="alert alert-{{rubrique}}">
 							{% for message in messages %}
 								<p>{{ message }}</p>
 							{% endfor %}
 						</div>
-					{% endfor %}
-				</div>
-			{% endif %}
+					</div>
+				</section>
+			{% endfor %}
 
 			{% block body %}{% endblock %}
-
 
 			{% include "shared/_footer.html.twig" %}
 

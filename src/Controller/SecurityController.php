@@ -4,17 +4,22 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\SigninFormType;
-use App\Repository\UserRepository;
 use App\Service\FileUploader;
+use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\GuardAuthenticationFactory;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 
 class SecurityController extends AbstractController
 {
@@ -64,9 +69,10 @@ class SecurityController extends AbstractController
         Request $request,
         UserPasswordHasherInterface $hasher,
         EntityManagerInterface $em,
-        FileUploader $fileUploader
+        FileUploader $fileUploader,
+        MailerInterface $mailer
     ): Response {
-        
+
         $user = new User;
         $form = $this->createForm(SigninFormType::class, $user);
         $form->handleRequest($request);
@@ -89,9 +95,22 @@ class SecurityController extends AbstractController
 
             $em->persist($user);
             $em->flush();
-            // do anything else you need here, like send an email
 
-            $this->addFlash('success', "Votre inscription est validée, félicitations.");
+            $userEmailAddress = $user->getEmail();
+            $userName = $user->getScreenName();
+            $email = new TemplatedEmail();
+            $email
+                ->from(new Address("contact@snowtricks.com", "Validation de votre inscription."))
+                ->to($userEmailAddress)
+                ->text("Votre inscription est validée " . $userName . ", vous pouvez maintenant vous connecter.")
+                ->htmlTemplate('emails/registration.html.twig')
+                ->context([
+                    'user' => $user
+                ])
+                ->subject("Validation d'inscription");
+            $mailer->send($email);
+
+            $this->addFlash('success', "Votre inscription est validée, un email vient de vous être envoyé.");
 
             return $this->redirectToRoute('home');
         }

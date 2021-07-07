@@ -45,5 +45,3 @@ services:
     App\Service\FileUploader:
         arguments:
             $targetDirectory: '%idPhotosDir%'
-    
-    App\Service\UrlToEmbedTransformer: ~

@@ -10,7 +10,9 @@
 <div class="row">
 	<div class="col-lg-6">
 		<div class="my-3">
-			<h4>Ici les images ...</h4>
+			<h4>Ici les images ...
+			</h4>
+			<p>(JPEG, JPG, PNG, GIF et autres WebP)</p>
 			<button type="button" class="btn btn-info btn-new" data-collection="#pictures">
 				<i class="fas fa-images"></i>
 				Ajouter une image
@@ -22,11 +24,15 @@
 				{{ include("trick/_addPictureForm.html.twig", {formView: picture}) }}
 			{% endfor %}
 		</div>
-			{{ form_errors(formView.pictures) }}
+		{{ form_errors(formView.pictures) }}
 	</div>
 	<div class="col-lg-6">
 		<div class="my-3">
-			<h4>... et là les vidéos</h4>
+			<h4>... et là les vidéos <i class="fab fa-youtube"></i>
+				<i class="fab fa-vimeo-v"></i>
+				<i class="fab fa-dailymotion"></i>
+			</h4>
+			<p>(attention : les liens facebook ne sont pas gérés par notre système)</p>
 			<button type="button" class="btn btn-info btn-new" data-collection="#videos">
 				<i class="fas fa-film"></i>
 				Ajouter une vidéo

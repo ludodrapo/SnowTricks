@@ -49,7 +49,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @var UploadedFile|null
-     * @Assert\Image
+     * @Assert\File(
+     *     mimeTypes="image/*",
+     *     mimeTypesMessage="Ce fichier n'est pas une image."
+     * )
      */
     private ?UploadedFile $file = null;
 

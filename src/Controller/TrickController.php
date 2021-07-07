@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use DateTime;
 use App\Entity\Trick;
 use App\Entity\Comment;
@@ -24,45 +25,30 @@ class TrickController extends AbstractController
 {
     /**
      * @Route("/{slug}", name="trick_category", priority=-1)
+     * @param Category $category
      */
-    public function category($slug, CategoryRepository $categoryRepository): Response
+    public function category(Category $category): Response
     {
-        $category = $categoryRepository->findOneBy([
-            'slug' => $slug
-        ]);
-
         if (!$category) {
             throw $this->createNotFoundException("La catégorie demandée n'existe pas ou plus.");
         }
 
         return $this->render('trick/category.html.twig', [
-            'slug' => $slug,
             'category' => $category
         ]);
     }
 
     /**
      * @Route("/{category_slug}/{slug}", name="trick_show")
-     * @param [string] $slug
-     * @param UserRepository $userRepository
-     * @param TrickRepository $trickRepository
      * @param Request $request
      * @param EntityManagerInterface $em
-     * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
     public function show(
-        $slug,
-        UserRepository $userRepository,
-        TrickRepository $trickRepository,
+        Trick $trick,
         Request $request,
-        EntityManagerInterface $em,
-        AuthenticationUtils $authenticationUtils
+        EntityManagerInterface $em
     ): Response {
-
-        $trick = $trickRepository->findOneBy([
-            'slug' => $slug
-        ]);
 
         $comments = $trick->getComments();
 
@@ -76,9 +62,16 @@ class TrickController extends AbstractController
 
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $comment->setTrick($trick);
-            $comment->setUser($userRepository->findOneBy(['email' => $authenticationUtils->getLastUsername()]));
+            $comment->setUser($this->getUser());
             $em->persist($comment);
             $em->flush();
+
+            $this->addFlash('success', "Merci pour votre commentaire !");
+
+            return $this->redirectToRoute('trick_show', [
+                'category_slug' => $trick->getCategory()->getSlug(),
+                'slug' => $trick->getSlug()
+            ]);
         }
 
         return $this->render('trick/show.html.twig', [
@@ -93,17 +86,13 @@ class TrickController extends AbstractController
      * @param Request $request
      * @param SluggerInterface $slugger
      * @param EntityManagerInterface $em
-     * @param UserRepository $userRepository
-     * @param AuthenticationUtils $authenticationUtils
      * @param UrlToEmbedTransformer $transformer
      * @return Response
      */
     public function create(
         Request $request,
         SluggerInterface $slugger,
-        UserRepository $userRepository,
         EntityManagerInterface $em,
-        AuthenticationUtils $authenticationUtils,
         UrlToEmbedTransformer $transformer
     ): Response {
 
@@ -114,7 +103,7 @@ class TrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $trick->setSlug(strtolower($slugger->slug($trick->getName())));
-            $trick->setUser($userRepository->findOneBy(['email' => $authenticationUtils->getLastUsername()]));
+            $trick->setUser($this->getUser());
 
             foreach($trick->getVideos() as $video) {
                 $video->setUrl($transformer->urlToEmbed($video->getUrl()));
@@ -148,10 +137,8 @@ class TrickController extends AbstractController
         $id,
         Request $request,
         TrickRepository $trickRepository,
-        UserRepository $userRepository,
         SluggerInterface $slugger,
         EntityManagerInterface $em,
-        AuthenticationUtils $authenticationUtils,
         UrlToEmbedTransformer $transformer
     ): Response {
         $trick = $trickRepository->find($id);
@@ -163,7 +150,7 @@ class TrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $trick->setSlug(strtolower($slugger->slug($trick->getName())));
-            $trick->setUser($userRepository->findOneBy(['email' => $authenticationUtils->getLastUsername()]));
+            $trick->setUser($this->getUser());
                         
             foreach($trick->getVideos() as $video) {
                 $video->setUrl($transformer->urlToEmbed($video->getUrl()));
@@ -188,16 +175,23 @@ class TrickController extends AbstractController
      * @Route("/admin/trick/{id}/delete", name="trick_delete")
      * @param TrickRepository $trickRepository
      * @param EntityManagerInterface $em
+     * @param Filesystem $filesystem
      * @return Response
      */
     public function delete(
         TrickRepository $trickRepository,
         EntityManagerInterface $em,
-        $id
+        $id,
+        Filesystem $filesystem
     ): Response {
 
-        $filesystem = new Filesystem;
         $trick = $trickRepository->find($id);
+
+        if (!$trick) {
+            $this->addFlash('danger', "Ce trick n'existe pas ou plus.");
+            $this->redirectToRoute('home');
+        }
+
         $pictures = $trick->getPictures();
 
         foreach ($pictures as $picture) {
@@ -207,6 +201,8 @@ class TrickController extends AbstractController
         $em->remove($trick);
         $em->flush();
 
+        $user = $this->getUser()->getScreenName();
+        $this->addFlash('success', "Le trick  a bien été supprimé, $user.");
         return $this->redirectToRoute('home');
     }
 }
