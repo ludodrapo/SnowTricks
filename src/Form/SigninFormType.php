@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\Image;
 
 class SigninFormType extends AbstractType
 {
@@ -57,7 +56,7 @@ class SigninFormType extends AbstractType
                 ]
             ])
             ->add('idPhoto', FileType::class, [
-                'label' => "Votre avatar (jpeg, jpg, gif, png, webp)",
+                'label' => "Votre avatar au format carré (jpeg, jpg, gif, png, webp)",
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [

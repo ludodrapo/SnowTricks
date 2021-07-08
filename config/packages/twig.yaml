@@ -7,6 +7,15 @@ twig:
     globals:
         categoryRepository: "@App\\Repository\\CategoryRepository"
 
+    paths:
+        # point this wherever your images live
+        '%kernel.project_dir%/public/assets/img': images
+
+        # point this wherever your css files live
+        '%kernel.project_dir%/public/assets/css': styles
+
+
+
 when@test:
     twig:
         strict_variables: true
