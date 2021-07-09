@@ -39,7 +39,7 @@
 			{% include "shared/_navbar.html.twig" %}
 
 			{% for rubrique, messages in app.flashes %}
-				<section id="flash-message">
+				<section id="app-flashes-section">
 					<div class="container mt-5 mb-0">
 						<div class="alert alert-{{rubrique}}">
 							{% for message in messages %}
@@ -70,7 +70,7 @@
 
 			<!-- Template Main JS File -->
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 			<script src="{{ asset('assets/js/main.js') }}"></script>
 			<script src="{{ asset('assets/js/myScript.js') }}"></script>
 		</body>

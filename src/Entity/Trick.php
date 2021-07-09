@@ -32,7 +32,7 @@ class Trick
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Ce champs ne peut être vide.")
-     * @Assert\Length(min=3, max=255, minMessage="Le nom du trick doit être d'au moins 3 caractères.")
+     * @Assert\Length(min=3, max=255, minMessage="Le nom du trick doit être d'au moins {{ limit }} caractères.")
      */
     private string $name;
 
@@ -44,6 +44,7 @@ class Trick
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Ce champs ne peut être vide.")
+     * @Assert\Length(min=15, max=255, minMessage="Le nom du trick doit être d'au moins {{ limit }} caractères.")
      */
     private string $description;
 

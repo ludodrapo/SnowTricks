@@ -59,7 +59,7 @@ class UrlToEmbedTransformer
 
             $functionnal_link = 'https://www.dailymotion.com/embed/video/' . $video_id;
 
-        // To do the same with facebook video
+        // To do the same with facebook video but the aspect ratio is 1:1 so it does not match with others
         // } else if (strpos($host, 'facebook') == true) {
 
         //     $partial_url = parse_url($url)['path'];
