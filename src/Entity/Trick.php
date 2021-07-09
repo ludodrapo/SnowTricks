@@ -13,7 +13,6 @@ use App\Repository\TrickRepository;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Filesystem\Filesystem;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints\Unique;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -33,7 +32,7 @@ class Trick
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Ce champs ne peut être vide.")
-     * @Assert\Length(min=3, max=255, minMessage="Le nom du trick doit être d'au moins 3 caractères.")
+     * @Assert\Length(min=3, max=255, minMessage="Le nom du trick doit être d'au moins {{ limit }} caractères.")
      */
     private string $name;
 
@@ -45,6 +44,7 @@ class Trick
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Ce champs ne peut être vide.")
+     * @Assert\Length(min=15, max=255, minMessage="Le nom du trick doit être d'au moins {{ limit }} caractères.")
      */
     private string $description;
 
@@ -72,10 +72,22 @@ class Trick
      */
     private $videos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true)
+     */
+    private $comments;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
+     */
+    private User $user;
+
     public function __construct()
     {
+        $this->creationDate = new DateTime('now');
         $this->pictures = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -124,12 +136,12 @@ class Trick
         return $this->creationDate;
     }
 
-    public function setCreationDate(\DateTimeInterface $creationDate): self
-    {
-        $this->creationDate = $creationDate;
+    // public function setCreationDate(\DateTimeInterface $creationDate): self
+    // {
+    //     $this->creationDate = $creationDate;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getCategory(): ?Category
     {
@@ -201,6 +213,48 @@ class Trick
                 $video->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getTrick() === $this) {
+                $comment->setTrick(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
