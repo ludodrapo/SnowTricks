@@ -32,7 +32,7 @@ class Picture
     /**
      * @var UploadedFile|null
      */
-    private UploadedFile $file;
+    private ?UploadedFile $file = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="pictures")

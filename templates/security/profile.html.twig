@@ -8,18 +8,33 @@
 	<section id="profile" class="features mt-5">
 		<div class="container">
 			<div class="section-title" data-aos="fade-up">
-				<h2>Profil de
+				<h2>
 					{{ user.screenName }}
-					!
 				</h2>
 			</div>
 			<div class="row mt-3">
-				<div class="col-md-6" align="center">
-					{{ user.email }}
+
+				<div class="col-md-6 mb-5" align="center">
+					<h3>Votre adresse mail de contact :</h3>
+					<strong>{{ user.email }}</strong>
 				</div>
-				<div class="col-md-6" align="center">
-					<img src="{{ asset(user.idPhotoPath) }}" alt="" width="100" height="100">
+
+				<div class="col-md-6 mb-5" align="center">
+					<h3>Votre avatar :</h3>
+					<img src="{{ asset(user.idPhotoPath) }}" alt="" width="60" height="60">
 				</div>
+			</div>
+
+			<div class="row mt-3">
+				<h3>Pour modifier votre mot de passe ...</h3>
+				{{ form_start(formView) }}
+				{{ form_row(formView.oldPassword) }}
+				{{ form_row(formView.newPassword1) }}
+				{{ form_row(formView.newPassword2) }}
+				<button class="btn form-submit-btn mt-3" type="submit">
+					Je modifie mon mot de passe
+				</button>
+				{{ form_end(formView) }}
 			</div>
 		</div>
 	</section>
