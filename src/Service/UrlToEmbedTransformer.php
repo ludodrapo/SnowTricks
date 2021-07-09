@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use Exception;
+
 class UrlToEmbedTransformer
 {
     /**
@@ -56,8 +58,8 @@ class UrlToEmbedTransformer
             }
 
             $functionnal_link = 'https://www.dailymotion.com/embed/video/' . $video_id;
-        }
 
+        // To do the same with facebook video but the aspect ratio is 1:1 so it does not match with others
         // } else if (strpos($host, 'facebook') == true) {
 
         //     $partial_url = parse_url($url)['path'];
@@ -67,9 +69,12 @@ class UrlToEmbedTransformer
         //     } else {
         //         $video_id = $partial_url[count($partial_url) - 2];
         //     }
-
-        //     $functionnal_link = 'https://www.facebook.com/youtube/videos/' . $video_id . '/';
-        // }
+            
+        //     $functionnal_link = 'https://www.facebook.com/facebook/videos/' . $video_id . '/';
+            
+        } else {
+            throw new Exception("Cette url n'est pas prise en charge par notre système.");
+        }
 
         return $functionnal_link;
     }

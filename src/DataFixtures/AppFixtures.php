@@ -70,11 +70,11 @@ class AppFixtures extends Fixture
                         )
                         ->addVideo(
                             (new Video())
-                                ->setUrl("https://youtu.be/AzJPhQdTRQQ")
+                                ->setUrl("https://www.youtube.com/embed/AzJPhQdTRQQ")
                         )
                         ->addVideo(
                             (new Video())
-                                ->setUrl("https://youtu.be/SQNc3VBOgEM")
+                                ->setUrl("https://www.youtube.com/embed/SQNc3VBOgEM")
                         )
                     );
 
