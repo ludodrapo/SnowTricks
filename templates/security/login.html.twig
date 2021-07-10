@@ -5,6 +5,9 @@
 
 {% block body %}
 	<section id="login">
+
+		{% include "shared/_flashes.html.twig" %}
+
 		<div class="container mt-5">
 
 			{% if app.user %}
@@ -21,7 +24,7 @@
 
 				<form method="post" name="login" class="mb-3">
 
-					<h1 class="h3 mb-3 font-weight-normal">Pour vous connecter ...</h1>
+					<h3 class="mb-3 font-weight-normal">Pour vous connecter ...</h3>
 
 					{% if error %}
 						<div
@@ -33,7 +36,7 @@
 
 					<div class="mb-3">
 						<label for="inputEmail">Email</label>
-						<input type="email" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+						<input type="email" name="email" id="inputEmail" class="form-control" autocomplete="email" value="{{ last_username }}" required autofocus>
 					</div>
 					<div class="my-3">
 						<label for="inputPassword">Password</label>

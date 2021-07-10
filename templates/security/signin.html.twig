@@ -5,8 +5,11 @@
 
 {% block body %}
 	<section id="signin">
+
+		{% include "shared/_flashes.html.twig" %}
+
 		<div class="container mt-5">
-			<h1>Pour vous inscrire ...</h1>
+			<h3>Pour vous inscrire ...</h3>
 
 			{% for flashError in app.flashes('verify_email_error') %}
 				<div class="alert alert-danger" role="alert">{{ flashError }}</div>

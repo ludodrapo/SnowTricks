@@ -27,6 +27,8 @@
 	</section>
 	<!-- End Breadcrumbs -->
 
+	{% include "shared/_flashes.html.twig" %}
+
 	<!-- ======= Portfolio Details Section ======= -->
 	<section id="portfolio-details" class="portfolio-details">
 		<div class="container">
@@ -61,24 +63,24 @@
 							<li>
 								<strong>Auteur
 								</strong>:
-								{{ trick.user.screenName }}</li>
+								{{ trick.user.screenName|capitalize }}</li>
 							<li>
 								<strong>Date de création
 								</strong>:
 								{{ trick.creationDate|date("d/m/Y") }}</li>
 
 							{% if app.user %}
-								{% if comments|length == 0 %}
+								{% if trick.comments|length == 0 %}
 									<li>
 										<strong>Nombre de commentaires
-										</strong>: ... 0 ! Mais vous avez la possibilité d'en laisser un
+										</strong>: ... 0 ! Mais vous pouvez être le premier
 										<a href="#comments">
-											ici</a>.</li>
+											en cliquant ici</a>.</li>
 								{% else %}
 									<li>
 										<strong>Nombre de commentaires
 										</strong>:
-										{{ comments|length }}
+										{{ trick.comments|length }}
 										... sans compter celui que vous pouvez laisser
 										<a href="#comments">
 											ici</a>.</li>
@@ -90,10 +92,10 @@
 									</a>
 								</li>
 							{% else %}
-								{% if comments|length == 0 %}
+								{% if trick.comments|length == 0 %}
 									<li>
 										<strong>Nombre de commentaires
-										</strong>: ... 0 ! Mais vous avez la possibilité d'en laisser un une fois
+										</strong>: ... 0 ! Mais vous pouvez être le premier, une fois
 										<a href="{{ path('security_login') }}">inscrit(e)</a>
 										et
 										<a href="{{ path('security_login') }}">connecté(e)</a>
@@ -102,7 +104,7 @@
 									<li>
 										<strong>Nombre de commentaires
 										</strong>:
-										{{ comments|length }}
+										{{ trick.comments|length }}
 										... sans compter celui que vous pouvez laisser une fois
 										<a href="{{ path('security_login') }}">inscrit(e)</a>
 										et
@@ -110,8 +112,6 @@
 										.
 									</li>
 								{% endif %}
-
-
 							{% endif %}
 						</ul>
 					</div>
@@ -130,16 +130,9 @@
 				</div>
 				<div class="row" data-aos="fade-up" aos-delay="600">
 					{% for video in trick.videos %}
-						{# {% if 'facebook' in video.url %} TO USE FACEBOOK VIDEOS TOO
-							<div id="fb-root" class="col-lg-4 col-md-6 mb-3" align="center">
-								<script async defer src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2"></script>
-								<div class="fb-video" data-href="{{ video.url }}" data-allowfullscreen="true"></div>
-							</div>
-						{% else %} #}
-							<div class="col-lg-4 col-md-6 mb-3" align="center">
-								<iframe src="{{ video.url }}" title="Video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-							</div>
-						{# {% endif %} #}
+						<div class="col-lg-4 col-md-6 mb-3" align="center">
+							<iframe src="{{ video.url }}" title="Video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+						</div>
 					{% endfor %}
 				</div>
 			</div>
@@ -157,24 +150,24 @@
 							!</h5>
 						{{ form_start(commentFormView) }}
 						{{ form_widget(commentFormView.content) }}
-						<button class="btn form-submit-btn mt-3">C'est ça qu'est-ce que j'veux dire !</button>
+						<button class="btn form-submit-btn mt-3">Je valide ce commentaire</button>
 						{{ form_end(commentFormView) }}
 					</div>
 
 				{% else %}
 
 					<div class="row mb-5" data-aos="fade-up" aos-delay="300">
-						<h5>N'hésitez pas à vous
+						<p>N'hésitez pas à vous
 							<a href="{{ path('security_login') }}">connecter</a>
 							ou vous
 							<a href="{{ path('security_signin') }}">inscrire</a>
-							si vous souhaitez commenter ce trick.</h5>
+							si vous souhaitez commenter ce trick.</p>
 					</div>
 
 				{% endif %}
 
 				<div class="row" data-aos="fade-up" aos-delay="600">
-					{% for comment in comments|reverse %}
+					{% for comment in comments %}
 						<div class="swiper-slide">
 							<div class="testimonial-wrap">
 								<div class="portfolio-info">
@@ -193,10 +186,12 @@
 							</div>
 						</div>
 					{% endfor %}
+					<div class="d-flex justify-content-center mt-3">
+						{{ knp_pagination_render(comments, 'shared/_pagination.html.twig')}}
+					</div>
 				</div>
+
 			</div>
-
-
 		</div>
 	</section>
 	<!-- End Portfolio Details Section -->
