@@ -11,20 +11,16 @@
 
 			<div class="d-flex justify-content-between align-items-center">
 				<ol>
-					<li>
-                        <a href="{{ path('home') }}">Home</a>
-                    </li>
-					<li>
-                        <a href="{{ path('trick_category', {'slug': category.slug}) }}">
-                            {{ category.name }}
-                        </a>
-                    </li>
+					<li><a href="{{ path('home') }}">Home</a></li>
+					<li>{{ category.name }}</li>
 				</ol>
 			</div>
 
 		</div>
 	</section>
 	<!-- End Breadcrumbs -->
+
+	{% include "shared/_flashes.html.twig" %}
 
 	<section id="last-tricks" class="more-services">
 		<div class="container">

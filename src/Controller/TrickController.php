@@ -10,9 +10,11 @@ use App\Form\TrickType;
 use App\Form\CommentType;
 use App\Repository\TrickRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\CommentRepository;
 use App\Repository\UserRepository;
 use App\Service\UrlToEmbedTransformer;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,10 +49,18 @@ class TrickController extends AbstractController
     public function show(
         Trick $trick,
         Request $request,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        CommentRepository $commentRepository,
+        PaginatorInterface $paginator
     ): Response {
 
-        $comments = $trick->getComments();
+        $comments_data = $commentRepository->findBy(['trick' => $trick], ['creationDate' => 'DESC']);
+
+        $comments = $paginator->paginate(
+            $comments_data,
+            $request->query->getInt('page', 1),
+            5
+        );
 
         if (!$trick) {
             throw $this->createNotFoundException("Désolé, ce trick n'existe pas ou plus.");
@@ -66,7 +76,7 @@ class TrickController extends AbstractController
             $em->persist($comment);
             $em->flush();
 
-            $this->addFlash('success', "Merci pour votre commentaire !");
+            $this->addFlash('success', "Merci pour votre commentaire, " . ucfirst($this->getUser()->getScreenName()) . " !");
 
             return $this->redirectToRoute('trick_show', [
                 'category_slug' => $trick->getCategory()->getSlug(),
@@ -173,8 +183,10 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/admin/trick/{id}/delete", name="trick_delete")
+     *
      * @param TrickRepository $trickRepository
      * @param EntityManagerInterface $em
+     * @param [type] $id
      * @param Filesystem $filesystem
      * @return Response
      */
@@ -186,6 +198,7 @@ class TrickController extends AbstractController
     ): Response {
 
         $trick = $trickRepository->find($id);
+        $category_slug = $trick->getCategory()->getSlug();
 
         if (!$trick) {
             $this->addFlash('danger', "Ce trick n'existe pas ou plus.");
@@ -193,7 +206,6 @@ class TrickController extends AbstractController
         }
 
         $pictures = $trick->getPictures();
-
         foreach ($pictures as $picture) {
             $filesystem->remove($picture->getPath());
         }
@@ -201,8 +213,10 @@ class TrickController extends AbstractController
         $em->remove($trick);
         $em->flush();
 
-        $user = $this->getUser()->getScreenName();
-        $this->addFlash('success', "Le trick  a bien été supprimé, $user.");
-        return $this->redirectToRoute('home');
+        $this->addFlash('success', "Le trick a bien été supprimé, " . ucfirst($this->getUser()->getScreenName()));
+
+        return $this->redirectToRoute('trick_category', [
+            'slug' => $category_slug
+        ]);
     }
 }
