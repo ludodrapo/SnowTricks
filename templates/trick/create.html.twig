@@ -6,6 +6,9 @@
 
 {% block body %}
 	<section id="trick_form" class="mt-5">
+
+		{% include "shared/_flashes.html.twig" %}
+		
 		<div class="container">
 			<h2>Nouveau trick</h2>
 			{{ form_start(formView) }}

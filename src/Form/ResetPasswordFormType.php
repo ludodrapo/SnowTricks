@@ -13,13 +13,15 @@ class ResetPasswordFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('email', EmailType::class, ['label' => 'Saisissez votre adresse email de contact']);
+        $builder->add('email', EmailType::class, [
+            'label' => 'Saisissez votre adresse email de contact'
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => User::class
         ]);
     }
 }

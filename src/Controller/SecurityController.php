@@ -141,6 +141,8 @@ class SecurityController extends AbstractController
             if ($idPhotoFile) {
                 $idPhotoFileName = $fileUploader->upload($idPhotoFile);
                 $user->setIdPhotoPath('/' . $fileUploader->getTargetDirectory() . '/' . $idPhotoFileName);
+            } else if (!$idPhotoFile) {
+                $user->setIdPhotoPath('/assets/img/basic-avatar.png');
             }
 
             $em->persist($user);
@@ -209,7 +211,7 @@ class SecurityController extends AbstractController
 
         $mailer->send($email);
 
-        $this->addFlash('success', "Votre mot de passe a été réinitialisé. Vous allez recevoir un email avec un mot de passe temporaire.");
+        $this->addFlash('success', "Votre mot de passe a bien été réinitialisé. Vous allez recevoir un email avec un mot de passe temporaire.");
 
         return $this->redirectToRoute('security_login');
     }

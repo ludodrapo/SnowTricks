@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 		<title>
 			Snowtricks -
 			{% block title %}{% endblock %}
@@ -37,18 +38,6 @@
 		<body>
 
 			{% include "shared/_navbar.html.twig" %}
-
-			{% for rubrique, messages in app.flashes %}
-				<section id="app-flashes-section">
-					<div class="container mt-5 mb-0">
-						<div class="alert alert-{{rubrique}}">
-							{% for message in messages %}
-								<p>{{ message }}</p>
-							{% endfor %}
-						</div>
-					</div>
-				</section>
-			{% endfor %}
 
 			{% block body %}{% endblock %}
 

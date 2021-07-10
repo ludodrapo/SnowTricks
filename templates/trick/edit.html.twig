@@ -7,14 +7,42 @@
 
 {% block body %}
 	<section id="trick_form" class="portfolio-details mt-5">
+
+		{% include "shared/_flashes.html.twig" %}
+
 		<div class="container">
 			<h2>{{ trick.name }}
-				<a href="{{ path('trick_delete', {id: trick.id}) }}">
-					<button class="btn btn-danger">
-						<i class="fas fa-trash-alt"></i>
-					</button>
-				</a>
+
+				{# <a href="{{ path('trick_delete', {id: trick.id}) }}"></a> #}
+
+				<!-- Button trigger modal -->
+					<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="fas fa-trash-alt"></i>
+				</button>
 			</h2>
+
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">ATTENTION !</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<p>Etes-vous vraiment sûr de vouloir supprimer ce trick ? Cette action est irréversible.</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+							<a href="{{ path('trick_delete', {id: trick.id}) }}">
+								<button type="button" class="btn btn-danger" href="{{ path('trick_delete', {id: trick.id}) }}">
+									Supprimer définitivement
+								</button>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
 
 			{{ form_start(formView) }}
 			{{ form_widget(formView._token)}}
