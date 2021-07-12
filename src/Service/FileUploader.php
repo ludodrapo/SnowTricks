@@ -5,13 +5,6 @@ namespace App\Service;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\File\Exception\CannotWriteFileException;
-use Symfony\Component\HttpFoundation\File\Exception\ExtensionFileException;
-use Symfony\Component\HttpFoundation\File\Exception\FormSizeFileException;
-use Symfony\Component\HttpFoundation\File\Exception\IniSizeFileException; 
-use Symfony\Component\HttpFoundation\File\Exception\NoFileException;
-use Symfony\Component\HttpFoundation\File\Exception\NoTmpDirFileException;
-use Symfony\Component\HttpFoundation\File\Exception\PartialFileException;
 
 class FileUploader
 {

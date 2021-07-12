@@ -30,10 +30,6 @@ class TrickController extends AbstractController
      */
     public function category(Category $category): Response
     {
-        if (!$category) {
-            throw $this->createNotFoundException("La catégorie demandée n'existe pas ou plus.");
-        }
-
         return $this->render('trick/category.html.twig', [
             'category' => $category
         ]);
