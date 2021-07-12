@@ -31,8 +31,7 @@ class SigninFormType extends AbstractType
                     new Length([
                         'min' => 3,
                         'minMessage' => "Votre nom d'utilisateur doit être composé d'au moins {{ limit }} caractères.",
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
+                        'max' => 255
                     ])
                 ]
             ])
@@ -56,7 +55,7 @@ class SigninFormType extends AbstractType
                 ]
             ])
             ->add('idPhoto', FileType::class, [
-                'label' => "Votre avatar au format carré (jpeg, jpg, gif, png, webp)",
+                'label' => "Votre avatar (jpeg, jpg, gif, png, webp au format carré)",
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [

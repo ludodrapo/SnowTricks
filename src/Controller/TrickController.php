@@ -21,7 +21,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class TrickController extends AbstractController
 {
@@ -115,7 +114,7 @@ class TrickController extends AbstractController
             $trick->setSlug(strtolower($slugger->slug($trick->getName())));
             $trick->setUser($this->getUser());
 
-            foreach($trick->getVideos() as $video) {
+            foreach ($trick->getVideos() as $video) {
                 $video->setUrl($transformer->urlToEmbed($video->getUrl()));
             }
 
@@ -161,8 +160,8 @@ class TrickController extends AbstractController
 
             $trick->setSlug(strtolower($slugger->slug($trick->getName())));
             $trick->setUser($this->getUser());
-                        
-            foreach($trick->getVideos() as $video) {
+
+            foreach ($trick->getVideos() as $video) {
                 $video->setUrl($transformer->urlToEmbed($video->getUrl()));
             }
             $em->flush();
