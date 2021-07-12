@@ -106,10 +106,9 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $trick->setSlug(strtolower($slugger->slug($trick->getName())));
             $trick->setUser($this->getUser());
-
+            //transforming url in embed video functionnal links
             foreach ($trick->getVideos() as $video) {
                 $video->setUrl($transformer->urlToEmbed($video->getUrl()));
             }
@@ -130,33 +129,28 @@ class TrickController extends AbstractController
 
     /**
      * @Route("admin/trick/{id}/edit", name="trick_edit")
-     * @param [int] $id
      * @param Request $request
-     * @param TrickRepository $trickRepository
+     * @param Trick $trick
      * @param SluggerInterface $slugger
      * @param EntityManagerInterface $em
      * @param UrlToEmbedTransformer $transformer
      * @return Response
      */
     public function edit(
-        $id,
         Request $request,
-        TrickRepository $trickRepository,
+        Trick $trick,
         SluggerInterface $slugger,
         EntityManagerInterface $em,
         UrlToEmbedTransformer $transformer
     ): Response {
-        $trick = $trickRepository->find($id);
 
         $form = $this->createForm(TrickType::class, $trick);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $trick->setSlug(strtolower($slugger->slug($trick->getName())));
             $trick->setUser($this->getUser());
-
+            // if new videos are added
             foreach ($trick->getVideos() as $video) {
                 $video->setUrl($transformer->urlToEmbed($video->getUrl()));
             }
@@ -179,26 +173,18 @@ class TrickController extends AbstractController
     /**
      * @Route("/admin/trick/{id}/delete", name="trick_delete")
      *
-     * @param TrickRepository $trickRepository
+     * @param Trick $trick
      * @param EntityManagerInterface $em
-     * @param [type] $id
      * @param Filesystem $filesystem
      * @return Response
      */
     public function delete(
-        TrickRepository $trickRepository,
+        Trick $trick,
         EntityManagerInterface $em,
-        $id,
         Filesystem $filesystem
     ): Response {
 
-        $trick = $trickRepository->find($id);
         $category_slug = $trick->getCategory()->getSlug();
-
-        if (!$trick) {
-            $this->addFlash('danger', "Ce trick n'existe pas ou plus.");
-            $this->redirectToRoute('home');
-        }
 
         $pictures = $trick->getPictures();
         foreach ($pictures as $picture) {
