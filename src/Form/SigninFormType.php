@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class SigninFormType extends AbstractType
 {
@@ -42,15 +43,15 @@ class SigninFormType extends AbstractType
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Vous devez saisir un mot de passe.',
+                    new Assert\Regex([
+                        'pattern' => '#^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)(?!.*\s)([\W\w]{8,16})$#',
+                        'message' => "Votre mot de passe doit contenir une majuscule, une minuscule, un chiffre et un caractère spécial."
                     ]),
                     new Length([
                         'min' => 8,
                         'minMessage' => "Votre mot de passe doit être composé d'au moins {{ limit }} caractères.",
-                        // max length allowed by Symfony for security reasons
-                        'max' => 255,
-                        'maxMessage' => "Votre mot de passe dépasse les 255 caractères, ça va être difficile à mémoriser, non ?!"
+                        'max' => 16,
+                        'maxMessage' => "Votre mot de passe ne doit pas dépasser les {{ limit }} caractères."
                     ])
                 ]
             ])

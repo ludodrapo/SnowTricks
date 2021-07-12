@@ -9,6 +9,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
+
 
 class UpdatePasswordFormType extends AbstractType
 {
@@ -21,15 +24,8 @@ class UpdatePasswordFormType extends AbstractType
                 'label' => "Mot de passe actuel",
                 'mapped' => false,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Vous devez saisir votre mot de pass actuel.',
-                    ]),
-                    new Length([
-                        'min' => 8,
-                        'minMessage' => "Votre mot de passe doit être composé d'au moins {{ limit }} caractères.",
-                        // max length allowed by Symfony for security reasons
-                        'max' => 255,
-                        'maxMessage' => "Votre mot de passe dépasse les 255 caractères, ça va être difficile à mémoriser, non ?!"
+                    new SecurityAssert\UserPassword([
+                        'message' => "Le mot de passe saisi n'est pas celui associé à ce profil."
                     ])
                 ]
             ])
@@ -39,15 +35,15 @@ class UpdatePasswordFormType extends AbstractType
                 'label' => "Nouveau mot de passe",
                 'mapped' => false,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Vous devez saisir un nouveau mot de passe.',
+                    new Assert\Regex([
+                        'pattern' => '#^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)(?!.*\s)([\W\w]{8,16})$#',
+                        'message' => "Votre mot de passe doit contenir une majuscule, une minuscule, un chiffre et un caractère spécial."
                     ]),
                     new Length([
                         'min' => 8,
                         'minMessage' => "Votre mot de passe doit être composé d'au moins {{ limit }} caractères.",
-                        // max length allowed by Symfony for security reasons
-                        'max' => 255,
-                        'maxMessage' => "Votre mot de passe dépasse les 255 caractères, ça va être difficile à mémoriser, non ?!"
+                        'max' => 16,
+                        'maxMessage' => "Votre mot de passe ne doit pas dépasser les {{ limit }} caractères."
                     ])
                 ]
             ])
@@ -59,13 +55,6 @@ class UpdatePasswordFormType extends AbstractType
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Vous devez saisir une deuxième fois votre nouveau mot de passe.',
-                    ]),
-                    new Length([
-                        'min' => 8,
-                        'minMessage' => "Votre mot de passe doit être composé d'au moins {{ limit }} caractères.",
-                        // max length allowed by Symfony for security reasons
-                        'max' => 255,
-                        'maxMessage' => "Votre mot de passe dépasse les 255 caractères, ça va être difficile à mémoriser, non ?!"
                     ])
                 ]
             ]);

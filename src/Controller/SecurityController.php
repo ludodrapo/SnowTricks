@@ -11,6 +11,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
 use App\Form\UpdatePasswordFormType;
 use App\Security\LoginFormAuthenticator;
+use App\Service\ResetPasswordMailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,11 +27,14 @@ use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
 class SecurityController extends AbstractController
 {
-
     /**
      * @Route("/profile/{id}", name="security_profile")
-     * @param int $id
+     *
+     * @param [int] $id
      * @param UserRepository $userRepository
+     * @param Request $request
+     * @param UserPasswordHasherInterface $hasher
+     * @param EntityManagerInterface $em
      * @return Response
      */
     public function profile(
@@ -162,21 +166,15 @@ class SecurityController extends AbstractController
      *
      * @param Request $request
      * @param UserRepository $userRepository
-     * @param MailerInterface $mailer
-     * @param UserPasswordHasherInterface $hasher
-     * @param EntityManagerInterface $em
      * @return Response
      */
     public function forgottenPassword(
         Request $request,
         UserRepository $userRepository,
-        MailerInterface $mailer,
-        UserPasswordHasherInterface $hasher,
-        EntityManagerInterface $em
+        ResetPasswordMailer $resetPasswordMailer
     ): Response {
 
         $email = $request->request->get('reset_password_form')['email'];
-
         $user = $userRepository->findOneBy([
             'email' => $email
         ]);
@@ -185,25 +183,9 @@ class SecurityController extends AbstractController
             $this->addFlash('danger', "Aucun profil n'est associé à cet email, mais vous pouvez vous inscrire sur cette page.");
             return $this->redirectToRoute('security_signin');
         } else {
-            $temp_password = uniqid();
-
-            $em->persist($user->setPassword($hasher->hashPassword($user, $temp_password)));
-            $em->flush();
-
-            $email = new TemplatedEmail();
-            $email
-                ->from(new Address("contact@snowtricks.com", "Réinitialisation de votre mot de passe."))
-                ->to($user->getEmail())
-                ->htmlTemplate('emails/resetPasswordEmail.html.twig')
-                ->context([
-                    'user' => $user,
-                    'temp_password' => $temp_password
-                ])
-                ->subject("Réinitialisation de votre mot de passe.");
-
-            $mailer->send($email);
-
-            $this->addFlash('success', "Votre mot de passe a bien été réinitialisé. Vous allez recevoir un email avec un mot de passe temporaire.");
+            $temp_password = $resetPasswordMailer->resetPassword($user);
+            $resetPasswordMailer->sendResetPasswordMail($user, $temp_password);
+            $this->addFlash('success', "Votre mot de passe a bien été réinitialisé. Vous allez recevoir un email avec un mot de passe temporaire. Veillez à le modifier le plus vite possible dans votre profil.");
 
             return $this->redirectToRoute('security_login');
         }

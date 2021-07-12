@@ -9,8 +9,8 @@
 
 		{% include "shared/_flashes.html.twig" %}
 
-		<div class="container">
-			<div class="section-title" data-aos="fade-up">
+		<div class="container mt-5">
+			<div class="section-title">
 				<h2>
 					{{ user.screenName }}
 				</h2>
@@ -28,12 +28,20 @@
 				</div>
 			</div>
 
-			<div class="row mt-3">
+			<div class="row my-3">
 				<h3>Pour modifier votre mot de passe ...</h3>
 				{{ form_start(formView) }}
-				{{ form_row(formView.oldPassword) }}
-				{{ form_row(formView.newPassword1) }}
-				{{ form_row(formView.newPassword2) }}
+				<div class="row my-3">
+					<div class="col-lg-4">
+						{{ form_row(formView.oldPassword) }}
+					</div>
+					<div class="col-lg-4">
+						{{ form_row(formView.newPassword1) }}
+					</div>
+					<div class="col-lg-4">
+						{{ form_row(formView.newPassword2) }}
+					</div>
+				</div>
 				<button class="btn form-submit-btn mt-3" type="submit">
 					Je modifie mon mot de passe
 				</button>
