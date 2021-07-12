@@ -8,19 +8,30 @@
 
 		{% include "shared/_flashes.html.twig" %}
 
-		<div class="container mt-5">
-			<h3>Pour vous inscrire ...</h3>
+		<div class="container my-5">
+			<h3 class="mb-5">Pour vous inscrire ...</h3>
 
 			{% for flashError in app.flashes('verify_email_error') %}
 				<div class="alert alert-danger" role="alert">{{ flashError }}</div>
 			{% endfor %}
 
 			{{ form_start(signinFormView) }}
-
-			{{ form_row(signinFormView.email) }}
-			{{ form_row(signinFormView.screenName) }}
-			{{ form_row(signinFormView.plainPassword) }}
-			{{ form_row(signinFormView.idPhoto) }}
+			<div class="row g-2 mb-5">
+				<div class="col-lg">
+					{{ form_row(signinFormView.email) }}
+				</div>
+				<div class="col-lg">
+					{{ form_row(signinFormView.screenName) }}
+				</div>
+			</div>
+			<div class="row g-2 mb-5">
+				<div class="col-lg">
+					{{ form_row(signinFormView.plainPassword) }}
+				</div>
+				<div class="col-lg">
+					{{ form_row(signinFormView.idPhoto) }}
+				</div>
+			</div>
 			{{ form_row(signinFormView.agreeTerms) }}
 
 			<button type="submit" class="btn form-submit-btn">C'est bon : je m'inscris !</button>

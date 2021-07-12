@@ -80,7 +80,7 @@ class AppFixtures extends Fixture
 
                 $trickIndex++;
 
-                for ($c = 1; $c <= 3; $c++) {
+                for ($c = 1; $c <= 6; $c++) {
                     $manager->persist(
                         (new Comment())
                             ->setContent("Petit commentaire inutile sur un trick n'existant pas plus que l'utilisateur qui rédige ces mots.")

@@ -78,19 +78,11 @@ class SecurityController extends AbstractController
      *
      * @param AuthenticationUtils $utils
      * @param Request $request
-     * @param UserRepository $userRepository
-     * @param EntityManagerInterface $em
-     * @param MailerInterface $mailer
-     * @param UserPasswordHasherInterface $hasher
      * @return Response
      */
     public function login(
         AuthenticationUtils $utils,
-        Request $request,
-        UserRepository $userRepository,
-        EntityManagerInterface $em,
-        MailerInterface $mailer,
-        UserPasswordHasherInterface $hasher
+        Request $request
     ): Response {
 
         $form = $this->createForm(ResetPasswordFormType::class);
@@ -164,7 +156,7 @@ class SecurityController extends AbstractController
     public function logout()
     {
     }
-    
+
     /**
      * @Route("/forgotten-password", name="security_forgottenPassword")
      *
@@ -190,29 +182,30 @@ class SecurityController extends AbstractController
         ]);
 
         if (!$user) {
-            $this->createNotFoundException("Aucun profil n'existe avec cet identifiant.");
+            $this->addFlash('danger', "Aucun profil n'est associé à cet email, mais vous pouvez vous inscrire sur cette page.");
+            return $this->redirectToRoute('security_signin');
+        } else {
+            $temp_password = uniqid();
+
+            $em->persist($user->setPassword($hasher->hashPassword($user, $temp_password)));
+            $em->flush();
+
+            $email = new TemplatedEmail();
+            $email
+                ->from(new Address("contact@snowtricks.com", "Réinitialisation de votre mot de passe."))
+                ->to($user->getEmail())
+                ->htmlTemplate('emails/resetPasswordEmail.html.twig')
+                ->context([
+                    'user' => $user,
+                    'temp_password' => $temp_password
+                ])
+                ->subject("Réinitialisation de votre mot de passe.");
+
+            $mailer->send($email);
+
+            $this->addFlash('success', "Votre mot de passe a bien été réinitialisé. Vous allez recevoir un email avec un mot de passe temporaire.");
+
+            return $this->redirectToRoute('security_login');
         }
-
-        $temp_password = uniqid();
-
-        $em->persist($user->setPassword($hasher->hashPassword($user, $temp_password)));
-        $em->flush();
-
-        $email = new TemplatedEmail();
-        $email
-            ->from(new Address("contact@snowtricks.com", "Réinitialisation de votre mot de passe."))
-            ->to($user->getEmail())
-            ->htmlTemplate('emails/resetPasswordEmail.html.twig')
-            ->context([
-                'user' => $user,
-                'temp_password' => $temp_password
-            ])
-            ->subject("Réinitialisation de votre mot de passe.");
-
-        $mailer->send($email);
-
-        $this->addFlash('success', "Votre mot de passe a bien été réinitialisé. Vous allez recevoir un email avec un mot de passe temporaire.");
-
-        return $this->redirectToRoute('security_login');
     }
 }

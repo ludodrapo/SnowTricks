@@ -22,9 +22,9 @@
 
 			{% else %}
 
-				<form method="post" name="login" class="mb-3">
+				<form method="post" name="login" class="mb-5">
 
-					<h3 class="mb-3 font-weight-normal">Pour vous connecter ...</h3>
+					<h3 class="mb-5 font-weight-normal">Pour vous connecter ...</h3>
 
 					{% if error %}
 						<div
@@ -34,13 +34,19 @@
 						</div>
 					{% endif %}
 
-					<div class="mb-3">
-						<label for="inputEmail">Email</label>
-						<input type="email" name="email" id="inputEmail" class="form-control" autocomplete="email" value="{{ last_username }}" required autofocus>
-					</div>
-					<div class="my-3">
-						<label for="inputPassword">Password</label>
-						<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+					<div class="row g-2 mb-5">
+						<div class="col-lg">
+							<div class="form-group">
+								<label for="inputEmail">Email</label>
+								<input type="email" name="email" id="inputEmail" class="form-control" autocomplete="email" value="{{ last_username }}" required autofocus>
+							</div>
+						</div>
+						<div class="col-lg">
+							<div class="form-group">
+								<label for="inputPassword">Password</label>
+								<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+							</div>
+						</div>
 					</div>
 
 					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
@@ -55,21 +61,22 @@
 			{% endif %}
 
 			<!-- Button trigger modal -->
-			<a data-bs-toggle="modal" href="#resetPassword">
-				Je n'arrive pas à me souvenir de ce p..... de mot de passe !
+			<a data-bs-toggle="modal" href="#resetPassword" class="mb-5">
+				J'ai oublié mon mot de passe !
 			</a>
 
 			<!-- Modal -->
 			<div class="modal fade" id="resetPassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
-						{{ form_start(formView, {'action': path('security_forgottenPassword')}) }}
+						{{ form_start(formView, {'action': path('security_forgottenPassword'), 'legend': ''}) }}
 						<div class="modal-header">
 							<h5 class="modal-title" id="exampleModalLabel">Pour réinitialiser votre mot de passe ...</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
-							{{ form_row(formView) }}
+							{{ form_widget(formView) }}
+							{{ form_errors(formView) }}
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
