@@ -154,19 +154,14 @@ class SecurityController extends AbstractController
         ResetPasswordMailer $resetPasswordMailer
     ): Response {
 
-        $email = $request->request->get('reset_password_form')['email'];
-        $user = $userRepository->findOneBy([
-            'email' => $email
-        ]);
+        $user = $userRepository->findOneBy(['email' => $request->request->get('reset_password_form')['email']]);
 
         if (!$user) {
             $this->addFlash('danger', "Aucun profil n'est associé à cet email, mais vous pouvez vous inscrire sur cette page.");
             return $this->redirectToRoute('security_signin');
         } else {
-            $temp_password = $resetPasswordMailer->resetPassword($user);
-            $resetPasswordMailer->sendResetPasswordMail($user, $temp_password);
+            $resetPasswordMailer->sendResetPasswordMail($user);
             $this->addFlash('success', "Votre mot de passe a bien été réinitialisé. Vous allez recevoir un email avec un mot de passe temporaire. Veillez à le modifier le plus vite possible dans votre profil.");
-
             return $this->redirectToRoute('security_login');
         }
     }
