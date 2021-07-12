@@ -51,12 +51,7 @@ class UpdatePasswordFormType extends AbstractType
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'label' => "Encore une fois (pour être sûr)",
-                'mapped' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Vous devez saisir une deuxième fois votre nouveau mot de passe.',
-                    ])
-                ]
+                'mapped' => false
             ]);
     }
 

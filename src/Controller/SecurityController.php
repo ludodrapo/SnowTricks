@@ -6,49 +6,35 @@ use App\Entity\User;
 use App\Form\ResetPasswordFormType;
 use App\Form\SigninFormType;
 use App\Service\FileUploader;
-use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
-use Symfony\Component\Mime\Address;
 use App\Form\UpdatePasswordFormType;
-use App\Security\LoginFormAuthenticator;
 use App\Service\ResetPasswordMailer;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\GuardAuthenticationFactory;
-use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+
 
 class SecurityController extends AbstractController
 {
     /**
      * @Route("/profile/{id}", name="security_profile")
      *
-     * @param [int] $id
-     * @param UserRepository $userRepository
+     * @param User $user
      * @param Request $request
      * @param UserPasswordHasherInterface $hasher
      * @param EntityManagerInterface $em
      * @return Response
      */
     public function profile(
-        $id,
-        UserRepository $userRepository,
+        User $user,
         Request $request,
         UserPasswordHasherInterface $hasher,
         EntityManagerInterface $em
     ): Response {
-
-        $user = $userRepository->find($id);
-        if (!$user) {
-            $this->createNotFoundException("Aucun profil n'existe avec cet identifiant.");
-        }
 
         $form = $this->createForm(UpdatePasswordFormType::class, $user);
         $form->handleRequest($request);
