@@ -40,21 +40,15 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $old_password = $form->get('oldPassword')->getData();
-            $new_password_1 = $form->get('newPassword1')->getData();
-            $new_password_2 = $form->get('newPassword2')->getData();
-            if (!$hasher->isPasswordValid($user, $old_password)) {
-                $this->addFlash('danger', "Attention, le mot de passe actuel saisi n'est pas celui associé à ce profil.");
-            } else if ($new_password_1 !== $new_password_2) {
-                $this->addFlash('danger', "Attention, les deux nouveaux mots de passe ne sont pas identiques.");
-            } else {
-                $em->persist($user->setPassword($hasher->hashPassword($user, $new_password_1)));
-                $em->flush();
-                $this->addFlash('success', "Votre mot de passe a bien été modifié.");
-                $this->redirectToRoute('security_profile', [
-                    'id' => $user->getId()
-                ]);
-            }
+
+            $new_password = $form->get('password')->getData();
+
+            $em->persist($user->setPassword($hasher->hashPassword($user, $new_password)));
+            $em->flush();
+            $this->addFlash('success', "Votre mot de passe a bien été modifié.");
+            $this->redirectToRoute('security_profile', [
+                'id' => $user->getId()
+            ]);
         }
 
         return $this->render('security/profile.html.twig', [
