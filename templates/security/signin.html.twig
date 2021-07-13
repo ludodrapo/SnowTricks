@@ -16,19 +16,20 @@
 			{% endfor %}
 
 			{{ form_start(signinFormView) }}
-			<div class="row g-2 mb-5">
-				<div class="col-lg">
+			<div class="row g-2 mb-3">
+				<div class="col-lg-6">
 					{{ form_row(signinFormView.email) }}
 				</div>
-				<div class="col-lg">
+				<div class="col-lg-6">
 					{{ form_row(signinFormView.screenName) }}
 				</div>
 			</div>
-			<div class="row g-2 mb-5">
-				<div class="col-lg">
-					{{ form_row(signinFormView.plainPassword) }}
+			<div class="row g-2 mb-3">
+				<div class="col-lg-6">
+					{{ form_row(signinFormView.password) }}
+					{% include "security/_constraintsHelpBlock.html.twig" %}
 				</div>
-				<div class="col-lg">
+				<div class="col-lg-6">
 					{{ form_row(signinFormView.idPhoto) }}
 				</div>
 			</div>

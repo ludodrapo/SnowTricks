@@ -2,16 +2,13 @@
 
 namespace App\Controller;
 
+
 use App\Entity\Category;
-use DateTime;
 use App\Entity\Trick;
 use App\Entity\Comment;
 use App\Form\TrickType;
 use App\Form\CommentType;
-use App\Repository\TrickRepository;
-use App\Repository\CategoryRepository;
 use App\Repository\CommentRepository;
-use App\Repository\UserRepository;
 use App\Service\UrlToEmbedTransformer;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -30,7 +27,7 @@ class TrickController extends AbstractController
      */
     public function category(Category $category): Response
     {
-        return $this->render('trick/category.html.twig', [
+        return $this->render('category.html.twig', [
             'category' => $category
         ]);
     }
@@ -108,7 +105,7 @@ class TrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $trick->setSlug(strtolower($slugger->slug($trick->getName())));
             $trick->setUser($this->getUser());
-            //transforming url in embed video functionnal links
+            //transforming any url in embed video functionnal links
             foreach ($trick->getVideos() as $video) {
                 $video->setUrl($transformer->urlToEmbed($video->getUrl()));
             }

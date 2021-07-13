@@ -72,9 +72,7 @@ class SecurityController extends AbstractController
         $form = $this->createForm(ResetPasswordFormType::class);
         $form->handleRequest($request);
 
-        // get the login error if there is one
         $error = $utils->getLastAuthenticationError();
-        // last username entered by the user
         $lastUsername = $utils->getLastUsername();
 
         return $this->render('security/login.html.twig', [
@@ -108,7 +106,7 @@ class SecurityController extends AbstractController
             $user->setPassword(
                 $hasher->hashPassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $form->get('password')->getData()
                 )
             );
             //upload the avatar image

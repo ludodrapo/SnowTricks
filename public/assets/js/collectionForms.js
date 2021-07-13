@@ -31,3 +31,4 @@ document
 document
     .querySelectorAll('.btn-new')
     .forEach(btn => btn.addEventListener('click', newItem));
+

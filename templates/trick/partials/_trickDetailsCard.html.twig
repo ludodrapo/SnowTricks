@@ -1,0 +1,61 @@
+<div class="portfolio-info" data-aos="fade-left">
+	<ul>
+		<li>
+			<strong>Catégorie
+			</strong>:
+			{{ trick.category.name }}</li>
+		<li>
+			<strong>Auteur
+			</strong>:
+			{{ trick.user.screenName|capitalize }}</li>
+		<li>
+			<strong>Date de création
+			</strong>:
+			{{ trick.creationDate|date("d/m/Y") }}</li>
+
+		{% if app.user %}
+			{% if trick.comments|length == 0 %}
+				<li>
+					<strong>Nombre de commentaires
+					</strong>: ... 0 ! Mais vous pouvez être le premier
+					<a href="#comments">
+						en cliquant ici</a>.</li>
+			{% else %}
+				<li>
+					<strong>Nombre de commentaires
+					</strong>:
+					{{ trick.comments|length }}
+					... sans compter celui que vous pouvez laisser
+					<a href="#comments">
+						ici</a>.</li>
+			{% endif %}
+			<li>
+				<a class="getstarted scrollto" href="{{ path('trick_edit', { 'id': trick.id }) }}">
+					<i class="fas fa-pen"></i>
+					Modifier/supprimer ce trick
+				</a>
+			</li>
+		{% else %}
+			{% if trick.comments|length == 0 %}
+				<li>
+					<strong>Nombre de commentaires
+					</strong>: ... 0 ! Mais vous pouvez être le premier, une fois
+					<a href="{{ path('security_login') }}">inscrit(e)</a>
+					et
+					<a href="{{ path('security_login') }}">connecté(e)</a>
+					.</li>
+			{% else %}
+				<li>
+					<strong>Nombre de commentaires
+					</strong>:
+					{{ trick.comments|length }}
+					... sans compter celui que vous pouvez laisser une fois
+					<a href="{{ path('security_login') }}">inscrit(e)</a>
+					et
+					<a href="{{ path('security_login') }}">connecté(e)</a>
+					.
+				</li>
+			{% endif %}
+		{% endif %}
+	</ul>
+</div>

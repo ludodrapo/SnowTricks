@@ -36,3 +36,14 @@
     color: #fff;
     background: #4aa3df;
 }
+
+
+.navbar-mobile {
+    background: rgba(39, 54, 66, 0.5);
+}
+
+.navbar-mobile ul {
+    margin: auto;
+    top: 70px;
+    bottom: 330px;
+  }

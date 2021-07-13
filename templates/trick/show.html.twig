@@ -54,67 +54,9 @@
 				</div>
 
 				<div class="col-lg-5">
-					<div class="portfolio-info" data-aos="fade-left">
-						<ul>
-							<li>
-								<strong>Catégorie
-								</strong>:
-								{{ trick.category.name }}</li>
-							<li>
-								<strong>Auteur
-								</strong>:
-								{{ trick.user.screenName|capitalize }}</li>
-							<li>
-								<strong>Date de création
-								</strong>:
-								{{ trick.creationDate|date("d/m/Y") }}</li>
 
-							{% if app.user %}
-								{% if trick.comments|length == 0 %}
-									<li>
-										<strong>Nombre de commentaires
-										</strong>: ... 0 ! Mais vous pouvez être le premier
-										<a href="#comments">
-											en cliquant ici</a>.</li>
-								{% else %}
-									<li>
-										<strong>Nombre de commentaires
-										</strong>:
-										{{ trick.comments|length }}
-										... sans compter celui que vous pouvez laisser
-										<a href="#comments">
-											ici</a>.</li>
-								{% endif %}
-								<li>
-									<a class="getstarted scrollto" href="{{ path('trick_edit', { 'id': trick.id }) }}">
-										<i class="fas fa-pen"></i>
-										Modifier/supprimer ce trick
-									</a>
-								</li>
-							{% else %}
-								{% if trick.comments|length == 0 %}
-									<li>
-										<strong>Nombre de commentaires
-										</strong>: ... 0 ! Mais vous pouvez être le premier, une fois
-										<a href="{{ path('security_login') }}">inscrit(e)</a>
-										et
-										<a href="{{ path('security_login') }}">connecté(e)</a>
-										.</li>
-								{% else %}
-									<li>
-										<strong>Nombre de commentaires
-										</strong>:
-										{{ trick.comments|length }}
-										... sans compter celui que vous pouvez laisser une fois
-										<a href="{{ path('security_login') }}">inscrit(e)</a>
-										et
-										<a href="{{ path('security_login') }}">connecté(e)</a>
-										.
-									</li>
-								{% endif %}
-							{% endif %}
-						</ul>
-					</div>
+					{% include "trick/partials/_trickDetailsCard.html.twig" %}
+
 					<div class="portfolio-description">
 						<h2>Exécution du trick</h2>
 						<p>
@@ -142,49 +84,13 @@
 					<h2>Commentaires</h2>
 				</div>
 
-				{% if app.user %}
-
-					<div class="row mb-5" data-aos="fade-up" aos-delay="300">
-						<h5>N'hésitez pas à commenter ce trick,
-							{{ app.user.screenName|capitalize }}
-							!</h5>
-						{{ form_start(commentFormView) }}
-						{{ form_widget(commentFormView.content) }}
-						<button class="btn form-submit-btn mt-3">Je valide ce commentaire</button>
-						{{ form_end(commentFormView) }}
-					</div>
-
-				{% else %}
-
-					<div class="row mb-5" data-aos="fade-up" aos-delay="300">
-						<p>N'hésitez pas à vous
-							<a href="{{ path('security_login') }}">connecter</a>
-							ou vous
-							<a href="{{ path('security_signin') }}">inscrire</a>
-							si vous souhaitez commenter ce trick.</p>
-					</div>
-
-				{% endif %}
+				{{ include ("trick/partials/_commentForm.html.twig", {form: commentFormView}) }}
 
 				<div class="row" data-aos="fade-up" aos-delay="600">
 					{% for comment in comments %}
-						<div class="swiper-slide">
-							<div class="testimonial-wrap">
-								<div class="portfolio-info">
-									<img src="{{ asset(comment.user.idPhotoPath) }}" width="50" alt="">
-									<h5>{{ comment.user.screenName }}
-										a écrit le
-										{{ comment.creationDate|date("d/m/Y") }}
-										à
-										{{ comment.creationDate|date("H:i:s") }}</h5>
-									<p>
-										<i class="bx bxs-quote-alt-left quote-icon-left"></i>
-										{{ comment.content }}
-										<i class="bx bxs-quote-alt-right quote-icon-right"></i>
-									</p>
-								</div>
-							</div>
-						</div>
+
+						{% include "trick/partials/_commentCard.html.twig" %}
+
 					{% endfor %}
 					<div class="d-flex justify-content-center mt-3">
 						{{ knp_pagination_render(comments, 'shared/_pagination.html.twig')}}

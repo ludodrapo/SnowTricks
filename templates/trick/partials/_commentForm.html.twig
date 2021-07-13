@@ -1,0 +1,23 @@
+{% if app.user %}
+
+	<div class="row mb-5" data-aos="fade-up" aos-delay="300">
+		<h5>N'hésitez pas à commenter ce trick,
+			{{ app.user.screenName|capitalize }}
+			!</h5>
+		{{ form_start(commentFormView) }}
+		{{ form_widget(commentFormView.content) }}
+		<button class="btn form-submit-btn mt-3">Je valide ce commentaire</button>
+		{{ form_end(commentFormView) }}
+	</div>
+
+{% else %}
+
+	<div class="row mb-5" data-aos="fade-up" aos-delay="300">
+		<p>N'hésitez pas à vous
+			<a href="{{ path('security_login') }}">connecter</a>
+			ou vous
+			<a href="{{ path('security_signin') }}">inscrire</a>
+			si vous souhaitez commenter ce trick.</p>
+	</div>
+
+{% endif %}

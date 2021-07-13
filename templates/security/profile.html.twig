@@ -37,9 +37,11 @@
 					</div>
 					<div class="col-lg-4">
 						{{ form_row(formView.password.first) }}
+						{% include "security/_constraintsHelpBlock.html.twig" %}
 					</div>
 					<div class="col-lg-4">
 						{{ form_row(formView.password.second) }}
+						<p class="help-block text-info" id="new_password_2_help-block"></p>
 					</div>
 				</div>
 				<button class="btn form-submit-btn mt-3" type="submit">

@@ -35,7 +35,12 @@ class UpdatePasswordFormType extends AbstractType
                     ])
                 ],
                 'mapped' => false,
-                'first_options'  => ['label' => 'Nouveau mot de passe'],
+                'first_options'  => [
+                    'attr' => [
+                        'class' => 'password_to_check'
+                    ],
+                    'label' => 'Nouveau mot de passe'
+                ],
                 'second_options' => ['label' => 'Encore une fois (pour être sûr(e))'],
                 'invalid_message' => "Les deux mots de passe saisis ne sont pas identiques."
             ]);
