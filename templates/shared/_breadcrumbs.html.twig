@@ -1,0 +1,23 @@
+<section id="breadcrumbs" class="breadcrumbs">
+	<div class="container">
+
+		<div class="d-flex justify-content-between align-items-center">
+			<ol>
+				<li>
+					<a href="{{ path('home') }}">Home</a>
+				</li>
+				{% if trick is defined %}
+					<li>
+						<a href="{{ path('trick_category', {'slug': trick.category.slug}) }}">
+							{{ trick.category.name }}
+						</a>
+					</li>
+					<li>{{ trick.name }}</li>
+				{% else %}
+					<li>{{ category.name }}</li>
+				{% endif %}
+			</ol>
+		</div>
+
+	</div>
+</section>
