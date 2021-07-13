@@ -1,0 +1,17 @@
+<div class="swiper-slide">
+	<div class="testimonial-wrap">
+		<div class="portfolio-info">
+			<img src="{{ asset(comment.user.idPhotoPath) }}" width="50" alt="">
+			<h5>{{ comment.user.screenName }}
+				a écrit le
+				{{ comment.creationDate|date("d/m/Y") }}
+				à
+				{{ comment.creationDate|date("H:i:s") }}</h5>
+			<p>
+				<i class="bx bxs-quote-alt-left quote-icon-left"></i>
+				{{ comment.content }}
+				<i class="bx bxs-quote-alt-right quote-icon-right"></i>
+			</p>
+		</div>
+	</div>
+</div>

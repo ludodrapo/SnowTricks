@@ -37,29 +37,6 @@
 	</section>
 	<!-- End Hero -->
 
-	{# <!-- ======= Category Section ======= -->
-	<section id="category" class="features">
-		<div class="container">
-			<div class="section-title" data-aos="fade-up">
-				<h2>Catégories</h2>
-				<p>Vous pouvez faire une recherche par catégorie (ici ou dans le menu) ...</p>
-			</div>
-
-			<div class="row" data-aos="fade-up" data-aos-delay="300">
-				{% for category in categoryRepository.findAll() %}
-					<div class="col-6 col-lg-3 col-md-4 mt-3">
-						<div class="icon-box">
-							<h3>
-								<a href="{{ path('trick_category', {'slug': category.slug}) }}">{{ category.name }}</a>
-							</h3>
-						</div>
-					</div>
-				{% endfor %}
-			</div>
-		</div>
-	</section>
-	<!-- End Category Section --> #}
-
 	<!-- ======= Last created tricks Section ======= -->
 	<section id="last-tricks" class="more-services">
 		<div class="container">
@@ -70,7 +47,7 @@
 			<div class="row">
 
 				{% for trick in tricks|reverse %}
-					{% include "trick/_trickCard.html.twig" %}
+					{% include "shared/_trickCard.html.twig" %}
 				{% endfor %}
 
 			</div>

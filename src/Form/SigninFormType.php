@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Image;
 
 class SigninFormType extends AbstractType
 {
@@ -36,22 +37,17 @@ class SigninFormType extends AbstractType
                     ])
                 ]
             ])
-            ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
+            ->add('password', PasswordType::class, [
                 'label' => "Mot de passe",
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
+                'attr' => [
+                    'class' => 'password_to_check',
+                    'autocomplete' => 'new-password'
+                ],
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => '#^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)(?!.*\s)([\W\w]{8,16})$#',
-                        'message' => "Votre mot de passe doit contenir une majuscule, une minuscule, un chiffre et un caractère spécial."
-                    ]),
-                    new Length([
-                        'min' => 8,
-                        'minMessage' => "Votre mot de passe doit être composé d'au moins {{ limit }} caractères.",
-                        'max' => 16,
-                        'maxMessage' => "Votre mot de passe ne doit pas dépasser les {{ limit }} caractères."
+                        'message' => "Votre mot de passe doit contenir une majuscule, une minuscule, un chiffre, un caractère spécial et être composé d'entre 8 et 16 caractères."
                     ])
                 ]
             ])
@@ -60,11 +56,15 @@ class SigninFormType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
-                    new File([
+                    new Image([
                         'maxSize' => '1024k',
                         'maxSizeMessage' => "Ce fichier est trop lourd, il faudrait evisager de le compresser ou d'en réduire la taille.",
                         'mimeTypes' => 'image/*',
-                        'mimeTypesMessage' => "Attention, ce fichier n'est pas une image."
+                        'mimeTypesMessage' => "Attention, ce fichier n'est pas une image.",
+                        'allowLandscape' => false,
+                        'allowLandscapeMessage' => "Pour votre avatar, il nous faut un format carré (1:1)",
+                        'allowPortrait' => false,
+                        'allowPortraitMessage' => "Pour votre avatar, il nous faut un format carré (1:1)"
                     ])
                 ]
             ])
