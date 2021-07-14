@@ -18,25 +18,26 @@
     border-radius: 50px;
     color: #fff;
 }
+
 .form-submit-btn:hover {
     color: #fff;
     background: #4aa3df;
 }
 
 /* submit */
+
 #trick_form button[type="submit"] {
     background: #3498db;
     padding: 8px 25px;
     margin-left: 30px;
     border-radius: 50px;
     color: #fff;
-  }
-  
+}
+
 #trick_form button[type="submit"]:hover {
     color: #fff;
     background: #4aa3df;
 }
-
 
 .navbar-mobile {
     background: rgba(39, 54, 66, 0.5);
@@ -45,5 +46,9 @@
 .navbar-mobile ul {
     margin: auto;
     top: 70px;
-    bottom: 330px;
-  }
+    bottom: 300px;
+}
+
+div.main {
+    min-height: 85vh;
+}
