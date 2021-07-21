@@ -21,15 +21,12 @@ class UrlToEmbedTransformer
         if ($host === 'youtu.be' || strpos($host, 'youtube') == true) {
 
             $functionnal_link = 'https://www.youtube.com/embed/' . $this->getYouTubeVideoId($url);
-
         } else if (is_int(strpos($host, 'vimeo', 0))) {
 
             $functionnal_link = "https://player.vimeo.com/video/" . $this->getVimeoVideoId($url);
-
         } else if ($host === 'dai.ly' || strpos($host, 'daily') == true) {
 
             $functionnal_link = 'https://www.dailymotion.com/embed/video/' . $this->getDailyMotionVideoId($url, $host);
-
         } else {
             throw new Exception("Cette url n'est pas prise en charge par notre système.");
         }

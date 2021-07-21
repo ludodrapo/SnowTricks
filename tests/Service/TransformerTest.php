@@ -7,7 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 class TransformerTest extends TestCase
 {
-
     /**
      * @dataProvider urlsToBeTested
      * @return void
