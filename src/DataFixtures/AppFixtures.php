@@ -29,7 +29,7 @@ class AppFixtures extends Fixture
         for ($i = 1; $i <= 7; $i++) {
 
             $user = new User;
-            $hash = $this->hasher->hashPassword($user, "password$i");
+            $hash = $this->hasher->hashPassword($user, "password");
             $manager->persist(
                 $user
                     ->setEmail("user$i@gmail.com")
@@ -44,7 +44,6 @@ class AppFixtures extends Fixture
                     ->setName('Categorie ' . $i)
                     ->setSlug('categorie-' . $i)
             );
-
 
             for ($j = 1; $j <= 3; $j++) {
 

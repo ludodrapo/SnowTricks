@@ -3,16 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\ResetPasswordFormType;
 use App\Form\SigninFormType;
 use App\Service\FileUploader;
 use App\Repository\UserRepository;
+use App\Form\ResetPasswordFormType;
 use App\Form\UpdatePasswordFormType;
 use App\Service\ResetPasswordMailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -21,21 +22,21 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/profile/{id}", name="security_profile")
+     * @Route("/profile", name="security_profile")
+     * @IsGranted("ROLE_USER")
      *
-     * @param User $user
      * @param Request $request
      * @param UserPasswordHasherInterface $hasher
      * @param EntityManagerInterface $em
      * @return Response
      */
     public function profile(
-        User $user,
         Request $request,
         UserPasswordHasherInterface $hasher,
         EntityManagerInterface $em
     ): Response {
 
+        $user = $this->getUser();
         $form = $this->createForm(UpdatePasswordFormType::class, $user);
         $form->handleRequest($request);
 
@@ -46,9 +47,7 @@ class SecurityController extends AbstractController
             $em->persist($user->setPassword($hasher->hashPassword($user, $new_password)));
             $em->flush();
             $this->addFlash('success', "Votre mot de passe a bien été modifié.");
-            $this->redirectToRoute('security_profile', [
-                'id' => $user->getId()
-            ]);
+            $this->redirectToRoute('security_profile');
         }
 
         return $this->render('security/profile.html.twig', [
@@ -156,10 +155,12 @@ class SecurityController extends AbstractController
 
         if (!$user) {
             $this->addFlash('danger', "Aucun profil n'est associé à cet email, mais vous pouvez vous inscrire sur cette page.");
+
             return $this->redirectToRoute('security_signin');
         } else {
             $resetPasswordMailer->sendResetPasswordMail($user);
             $this->addFlash('success', "Votre mot de passe a bien été réinitialisé. Vous allez recevoir un email avec un mot de passe temporaire. Veillez à le modifier le plus vite possible dans votre profil.");
+
             return $this->redirectToRoute('security_login');
         }
     }

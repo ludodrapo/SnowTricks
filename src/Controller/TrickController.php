@@ -54,9 +54,9 @@ class TrickController extends AbstractController
             5
         );
 
-        if (!$trick) {
-            throw $this->createNotFoundException("Désolé, ce trick n'existe pas ou plus.");
-        }
+        // if (!$trick) {
+        //     throw $this->createNotFoundException("Désolé, ce trick n'existe pas ou plus.");
+        // }
 
         $comment = new Comment;
         $commentForm = $this->createForm(CommentType::class, $comment);
