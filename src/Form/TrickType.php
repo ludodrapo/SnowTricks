@@ -32,7 +32,8 @@ class TrickType extends AbstractType
                 'label' => 'Description complète',
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'Rédigez ici sa description complète'
+                    'placeholder' => 'Rédigez ici sa description complète',
+                    'rows' => 4
                 ]
             ])
             ->add('category', EntityType::class, [
