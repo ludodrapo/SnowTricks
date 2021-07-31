@@ -108,7 +108,7 @@ class SecurityController extends AbstractController
                     $form->get('password')->getData()
                 )
             );
-            //upload the avatar image
+            // and upload the avatar image
             /** @var UploadedFile $file */
             $idPhotoFile = $form->get('idPhoto')->getData();
             if ($idPhotoFile) {

@@ -7,6 +7,7 @@ use App\Repository\TrickRepository;
 use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class TrickControllerTest extends WebTestCase
 {
@@ -15,11 +16,13 @@ class TrickControllerTest extends WebTestCase
         $client = $this->createClient();
         $categoryRepository = static::getContainer()->get(CategoryRepository::class);
         $category = $categoryRepository->findOneBy([]);
+        $tricksCount = count($category->getTricks());
 
-        $client->request('GET', '/' . $category->getSlug());
+        $crawler = $client->request('GET', '/' . $category->getSlug());
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertPageTitleContains($category->getName());
+        $this->assertCount($tricksCount, $crawler->filter('.card-body'));
     }
 
     public function testReadOneExistingTrickReturninnOk()
@@ -57,36 +60,55 @@ class TrickControllerTest extends WebTestCase
         $this->assertSelectorExists('.alert.alert-success');
     }
 
-    // NOT OK FOR NOW
-    // public function testCreateOneTrick()
-    // {
-    //     $client = $this->createClient();
-    //     // To access the create page, we need to log a test user in
-    //     $userRepository = static::getContainer()->get(UserRepository::class);
-    //     $testUser = $userRepository->findOneBy([]);
-    //     $client->loginUser($testUser);
-    //     // To access the form with the submit button node
-    //     $crawler = $client->request('GET', 'admin/trick/create');
-    //     $buttonCrawlerNode = $crawler->selectButton('Créer le trick');
-    //     $form = $buttonCrawlerNode->form();
+    public function testCreateOneTrick()
+    {
+        $client = $this->createClient();
 
-    //     $form['trick[name]'] = 'Nouveau trick';
-    //     $form['trick[category]']->select('1');
-    //     $form['trick[description]'] = 'Courte description mais suffisament longue pour que ça passe les constraints !';
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $testUser = $userRepository->findOneBy([]);
+        $client->loginUser($testUser);
 
-    //     $picturesButton = $crawler->selectButton('Ajouter une image');
-    //     $pictureForm = $picturesButton->form();
-    //     $pictureForm['trick[pictures][0][file]']->upload('ludo/desktop/snowtricks-picture-test.jpg');
+        $crawler = $client->request('GET', 'admin/trick/create');
 
-    //     $videosButton = $crawler->selectButton('Ajouter une video');
-    //     $videoForm = $videosButton->form();
-    //     $videoForm['trick[videos][0][url]'] = 'https://youtu.be/AzJPhQdTRQQ';
+        $form = $crawler->filter('form[name=trick]')->form();
 
-    //     $client->submit($form);
-    //     $client->followRedirect();
+        $csrfToken = $form->get('trick[_token]')->getValue();
 
-    //     $this->assertSelectorExists('.alert.alert-success');
-    // }
+        $formData = [
+            'trick' => [
+                '_token' => $csrfToken,
+                'name' => 'Test de trick',
+                'description' => 'Description courte mais assez longue pour passer les constraints.',
+                'category' => 1,
+                'pictures' => [],
+                'videos' => [
+                    'url' => 'https://www.youtube.com/embed/SQNc3VBOgEM'
+                ]
+            ]
+        ];
+
+        $filename = (string) uniqid() . '.jpg';
+        $path = sprintf("%s/../../public/uploads/pictures/%s", __DIR__, $filename);
+        copy(sprintf("%s/../../public/uploads/pictures/picture_1.jpg", __DIR__), $path);
+
+        $fileData = [
+            'trick' => [
+                'pictures' => [
+                    'file' => new UploadedFile(
+                        $path,
+                        $filename,
+                        'image/png',
+                        null,
+                        true
+                    )
+                ]
+            ]
+        ];
+
+        $client->request('POST', '/admin/trick/create', $formData, $fileData);
+
+        $this->assertResponseRedirects();
+    }
 
     public function testEditTrickPageIsUpWhileUserLoggedIn()
     {

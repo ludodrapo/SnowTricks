@@ -48,7 +48,7 @@ class HomeControllerTest extends WebTestCase
     public function testHomepageDisplaysLoggedInUserScreenName()
     {
         $userRepository = static::getContainer()->get(UserRepository::class);
-        $testUser = $userRepository->findOneByEmail('user1@gmail.com');
+        $testUser = $userRepository->findOneBy([]);
         $this->client->loginUser($testUser);
 
         $this->client->request('GET', '/');

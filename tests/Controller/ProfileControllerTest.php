@@ -41,7 +41,6 @@ class ProfilerControllerTest extends WebTestCase
         $client = static::createClient();
 
         $userRepository = static::getContainer()->get(UserRepository::class);
-
         $testUser = $userRepository->findOneBy([]);
         $client->loginUser($testUser);
 
