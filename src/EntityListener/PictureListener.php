@@ -53,7 +53,7 @@ class PictureListener
     /**
      * @param Picture $picture
      */
-    public function preUpload(Picture $picture): void
+    public function preUpdate(Picture $picture): void
     {
         $this->upload($picture);
     }

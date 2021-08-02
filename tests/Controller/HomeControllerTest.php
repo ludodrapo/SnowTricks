@@ -52,6 +52,6 @@ class HomeControllerTest extends WebTestCase
         $this->client->loginUser($testUser);
 
         $this->client->request('GET', '/');
-        $this->assertSelectorTextContains('h3', 'Bienvenue User1 !');
+        $this->assertSelectorTextContains('h3', 'Bienvenue ' . $testUser->getScreenName() . ' !');
     }
 }

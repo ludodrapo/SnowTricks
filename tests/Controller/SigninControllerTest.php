@@ -2,7 +2,6 @@
 
 namespace tests\Controller;
 
-use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -30,9 +29,9 @@ class SigninControllerTest extends WebTestCase
             ]
         ];
 
-        $filename = (string) uniqid() . ".png";
+        $filename = 'idPhotoTest.png';
         $path = sprintf("%s/../../public/uploads/idPhotos/%s", __DIR__, $filename);
-        copy(sprintf("%s/../../public/uploads/idPhotos/user1.png", __DIR__), $path);
+        copy(sprintf("%s/../../public/uploads/idPhotos/mando.png", __DIR__), $path);
 
         $fileData = [
             'signin_form' => [
