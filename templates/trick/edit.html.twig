@@ -11,7 +11,7 @@
 		{% include "shared/_flashes.html.twig" %}
 
 		<div class="container">
-			<h2>{{ trick.name }}
+			<h2>{{ trick.name|capitalize }}
 
 				{# <a href="{{ path('trick_delete', {id: trick.id}) }}"></a> #}
 

@@ -13,9 +13,6 @@
 				<li>
 					<a class="nav-link" href="{{ path('home') }}">Accueil</a>
 				</li>
-				<li>
-					<a class="nav-link" href="#">Un peu d'histoire</a>
-				</li>
 				<li class="dropdown">
 					<a href="#">
 						<span>Catégories</span>
@@ -24,7 +21,7 @@
 					<ul>
 						{% for category in categoryRepository.findAll() %}
 							<li>
-								<a href="{{ path('trick_category', {'slug': category.slug}) }}">{{ category.name }}</a>
+								<a href="{{ path('trick_category', {'slug': category.slug}) }}">{{ category.name|capitalize }}</a>
 							</li>
 						{% endfor %}
 					</ul>

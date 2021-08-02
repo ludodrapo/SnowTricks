@@ -44,4 +44,4 @@ services:
 
     App\Service\FileUploader:
         arguments:
-            $targetDirectory: '%idPhotosDir%'
+            $targetDirectory: '%idPhotosAbsoluteDir%'

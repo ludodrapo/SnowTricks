@@ -136,7 +136,6 @@ class TrickController extends AbstractController
     public function edit(
         Request $request,
         Trick $trick,
-        SluggerInterface $slugger,
         EntityManagerInterface $em,
         UrlToEmbedTransformer $transformer
     ): Response {
@@ -145,8 +144,9 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $trick->setSlug(strtolower($slugger->slug($trick->getName())));
-            $trick->setUser($this->getUser());
+            // uncomment this if you want to change the trick slug when name is changed
+            // $trick->setSlug(strtolower($slugger->slug($trick->getName())));
+
             // if new videos are added
             foreach ($trick->getVideos() as $video) {
                 $video->setUrl($transformer->urlToEmbed($video->getUrl()));

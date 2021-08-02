@@ -1,8 +1,8 @@
 <div class="col-lg-6 d-flex align-items-stretch mt-4">
-	<div class="card" style='background-image: url("/uploads/pictures/picture_1.jpg");' data-aos="fade-up" data-aos-delay="100">
+	<div class="card" style='background-image: url("{{ asset(trick.pictures|first.getPath()) }}");' data-aos="fade-up" data-aos-delay="100">
 		<div class="card-body">
 			<h5 class="card-title">
-				<a href="{{ path('trick_show', { 'category_slug': trick.category.slug,'slug': trick.slug }) }}">{{ trick.name }}</a>
+				<a href="{{ path('trick_show', { 'category_slug': trick.category.slug,'slug': trick.slug }) }}">{{ trick.name|capitalize }}</a>
 			</h5>
 			<p class="card-text">{{ trick.description[:100] ~ (trick.description|length > 100 ? '...') }}</p>
 			<div class="read-more">

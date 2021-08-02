@@ -15,7 +15,6 @@ class ProfilerControllerTest extends WebTestCase
 
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneBy([]); //one user selected but not logged in
-        $id = $testUser->getId();
 
         $client->request('GET', '/profile');
 
@@ -41,7 +40,6 @@ class ProfilerControllerTest extends WebTestCase
         $client = static::createClient();
 
         $userRepository = static::getContainer()->get(UserRepository::class);
-
         $testUser = $userRepository->findOneBy([]);
         $client->loginUser($testUser);
 

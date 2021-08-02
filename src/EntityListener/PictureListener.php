@@ -32,8 +32,11 @@ class PictureListener
      * @param string $picturesDir
      * @param string $picturesAbsoluteDir
      */
-    public function __construct(string $picturesDir, string $picturesAbsoluteDir, SluggerInterface $slugger)
-    {
+    public function __construct(
+        string $picturesDir,
+        string $picturesAbsoluteDir,
+        SluggerInterface $slugger
+    ) {
         $this->picturesDir = $picturesDir;
         $this->picturesAbsoluteDir = $picturesAbsoluteDir;
         $this->slugger = $slugger;
@@ -50,7 +53,7 @@ class PictureListener
     /**
      * @param Picture $picture
      */
-    public function preUpload(Picture $picture): void
+    public function preUpdate(Picture $picture): void
     {
         $this->upload($picture);
     }
@@ -61,19 +64,30 @@ class PictureListener
      * @param Picture $picture
      * @return void
      */
-    private function Upload(Picture $picture): void
+    private function upload(Picture $picture): void
     {
         $file = $picture->getFile();
 
         if ($file instanceof UploadedFile) {
-            
-            $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $safeFilename = strtolower($this->slugger->slug($originalFilename));
+
+            $originalFilename = pathinfo(
+                $file->getClientOriginalName(),
+                PATHINFO_FILENAME
+            );
+            $safeFilename = strtolower(
+                $this->slugger->slug($originalFilename)
+            );
             $filename = $safeFilename . '-' . uniqid() . '.' . $file->guessClientExtension();
 
             $file->move($this->picturesAbsoluteDir, $filename);
 
-            $picture->setPath(sprintf('%s/%s', $this->picturesDir, $filename));
+            $picture->setPath(
+                sprintf(
+                    '%s/%s',
+                    $this->picturesDir,
+                    $filename
+                )
+            );
         }
     }
 }

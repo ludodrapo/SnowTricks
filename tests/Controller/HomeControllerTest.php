@@ -48,10 +48,10 @@ class HomeControllerTest extends WebTestCase
     public function testHomepageDisplaysLoggedInUserScreenName()
     {
         $userRepository = static::getContainer()->get(UserRepository::class);
-        $testUser = $userRepository->findOneByEmail('user1@gmail.com');
+        $testUser = $userRepository->findOneBy([]);
         $this->client->loginUser($testUser);
 
         $this->client->request('GET', '/');
-        $this->assertSelectorTextContains('h3', 'Bienvenue User1 !');
+        $this->assertSelectorTextContains('h3', 'Bienvenue ' . $testUser->getScreenName() . ' !');
     }
 }
