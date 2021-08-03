@@ -1,0 +1,21 @@
+# SnowTricks.Com
+
+<a href="https://codeclimate.com/github/codeclimate/codeclimate/maintainability"><img src="https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability" /></a>
+<a href="https://codeclimate.com/github/codeclimate/codeclimate/test_coverage"><img src="https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/test_coverage" /></a>
+
+Project number 6 from the OpenClassRooms cursus on PHP/Symfony developpement.
+
+Developped by Ludo Drapo with Symfony 5.3, php 7.4.12 and MySql 5.7.
+
+mailtrap.io
+
+Visually based on the Vesperr Template created by BootstapMade.Com
+
+To "try it at home", you can download these files and run
+```
+composer install
+```
+And after that
+```
+composer prepare
+```
