@@ -7,15 +7,25 @@ Project number 6 from the OpenClassRooms cursus on PHP/Symfony developpement.
 
 Developped by Ludo Drapo with Symfony 5.3, php 7.4.12 and MySql 5.7.
 
-mailtrap.io
-
 Visually based on the Vesperr Template created by BootstapMade.Com
 
-To "try it at home", you can download these files and run
+To "try it at home", you can download these files, configure your .env.local with the access to your database server like this
 ```
-composer install
+###> doctrine/doctrine-bundle ###
+DATABASE_URL="mysql:/db_/user:db_password@127.0.0.1:8889/db_name?serverVersion=5.7"
+###> doctrine/doctrine-bundle ###
 ```
-And after that
+then run
 ```
-composer prepare
+% composer install
+```
+And after that run
+```
+% composer prepare
+```
+Finaly, you will have to configure your DSN-MAILER (for instance mailtrap.io)
+```
+###> symfony/mailer ###
+MAILER_DSN= (...)
+###> symfony/mailer ###
 ```
