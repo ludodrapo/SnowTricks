@@ -6,6 +6,7 @@
 			!</h5>
 		{{ form_start(commentFormView) }}
 		{{ form_widget(commentFormView.content) }}
+		{{ form_errors(commentFormView.content) }}
 		<button class="btn form-submit-btn mt-3">Je valide ce commentaire</button>
 		{{ form_end(commentFormView) }}
 	</div>

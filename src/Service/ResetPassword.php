@@ -1,17 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+/**
+ * class ResetPassword
+ * @package App\Service
+ */
 class ResetPassword
 {
-    /** @var UserPasswordHasherInterface */
+    /** @var UserPasswordHasherInterface $hasher */
     private $hasher;
 
-    /** @var EntityManagerInterface */
+    /** @var EntityManagerInterface $em */
     private $em;
 
     public function __construct(UserPasswordHasherInterface $hasher, EntityManagerInterface $em)

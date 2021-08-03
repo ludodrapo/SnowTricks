@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace tests\Controller;
 
 use App\Repository\UserRepository;
@@ -8,8 +10,15 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * class EditTrickControllerTest
+ * @package tests\Controller
+ */
 class EditTrickControllerTest extends WebTestCase
 {
+    /**
+     * @return void
+     */
     public function testTryingToAccessEditTrickPageWhileNotLoggedInRedirectsToLogin()
     {
         $client = $this->createClient();
@@ -21,6 +30,9 @@ class EditTrickControllerTest extends WebTestCase
         $this->assertResponseRedirects('/login');
     }
 
+    /**
+     * @return void
+     */
     public function testSuccessfullEditOneTrick()
     {
         $client = $this->createClient();
@@ -31,6 +43,7 @@ class EditTrickControllerTest extends WebTestCase
 
         $trickRepository = static::getContainer()->get(TrickRepository::class);
         $testTrick = $trickRepository->findOneBy([]);
+        $author = $testTrick->getUser();
 
         $crawler = $client->request('GET', 'admin/trick/' . $testTrick->getId() . '/edit');
 
@@ -73,6 +86,9 @@ class EditTrickControllerTest extends WebTestCase
         $client->request(Request::METHOD_POST, '/admin/trick/' . $testTrick->getId() . '/edit', $formData, $fileData);
         $client->followRedirect();
 
+        // To ensure the trick title has been updated
         $this->assertSelectorTextContains('h2', 'Test de modification de trick');
+        // To ensure the author hasn't been changed
+        $this->assertSelectorTextContains('div.portfolio-info', 'Auteur : ' . $author->getScreenName());
     }
 }

@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace tests\Controller;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
- * Class LoginControllerTest
+ * class LoginControllerTest
  * @package tests\Controller
  */
 class ResetPasswordControllerTest extends WebTestCase
@@ -36,6 +37,9 @@ class ResetPasswordControllerTest extends WebTestCase
         $this->assertSelectorExists('.alert.alert-danger');
     }
 
+    /**
+     * @return void
+     */
     public function testSuccessfullResetPassword()
     {
         $client = static::createClient();
@@ -65,21 +69,5 @@ class ResetPasswordControllerTest extends WebTestCase
         $this->assertResponseRedirects('/login');
         $client->followRedirect();
         $this->assertSelectorExists('.alert.alert-success');
-    }
-
-    public function testSuccessfullLogout()
-    {
-        $client = $this->createClient();
-
-        $userRepository = static::getContainer()->get(UserRepository::class);
-        $testUser = $userRepository->findOneBy([]);
-        $client->loginUser($testUser);
-
-        $crawler = $client->request('GET', '/');
-        $link = $crawler->selectLink('Se déconnecter')->link();
-
-        $client->click($link);
-        $client->followRedirect();
-        $this->assertRouteSame('home');
     }
 }

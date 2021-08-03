@@ -1,14 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace tests\Controller;
 
 use App\Repository\UserRepository;
 use App\Repository\TrickRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * class CommentTrickControllerTest
+ * @package tests\Controller
+ */
 class CommentTrickControllerTest extends WebTestCase
 {
-    public function testCommentOneTrick()
+    /**
+     * @return void
+     */
+    public function testSuccessfullCommentOneTrick()
     {
         $client = $this->createClient();
         // To access the create page, we need to log a test user in
@@ -19,7 +28,10 @@ class CommentTrickControllerTest extends WebTestCase
         $trickRepository = static::getContainer()->get(TrickRepository::class);
         $trick = $trickRepository->findOneBy([]);
 
-        $crawler = $client->request('GET', '/' . $trick->getCategory()->getSlug() . '/' . $trick->getSlug());
+        $crawler = $client->request(
+            'GET',
+            '/' . $trick->getCategory()->getSlug() . '/' . $trick->getSlug()
+        );
 
         $form = $crawler->selectButton('Je valide ce commentaire')->form();
 

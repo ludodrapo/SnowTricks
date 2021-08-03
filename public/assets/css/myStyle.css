@@ -24,7 +24,7 @@
     background: #4aa3df;
 }
 
-/* submit */
+/* button submit */
 
 #trick_form button[type="submit"] {
     background: #3498db;
@@ -39,6 +39,8 @@
     background: #4aa3df;
 }
 
+/* Mobile menu */
+
 .navbar-mobile {
     background: rgba(39, 54, 66, 0.5);
 }
@@ -48,6 +50,8 @@
     top: 70px;
     bottom: 300px;
 }
+
+/* To keep covering the entire screen whatever the content is */
 
 div.main {
     min-height: 85vh;

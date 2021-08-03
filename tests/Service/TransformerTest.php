@@ -1,10 +1,14 @@
 <?php
 
-namespace App\tests\Service;
+namespace tests\Service;
 
 use App\Service\UrlToEmbedTransformer;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * class TransformerTest
+ * @package tests\Service
+ */
 class TransformerTest extends TestCase
 {
     /**

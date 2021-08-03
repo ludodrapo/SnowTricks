@@ -1,12 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * class SigninControllerTest
+ * @package tests\Controller
+ */
 class SigninControllerTest extends WebTestCase
 {
+    /**
+     * @return void
+     */
     public function testSuccessfullCompleteSignin()
     {
         $client = $this->createClient();
@@ -52,6 +61,9 @@ class SigninControllerTest extends WebTestCase
         $this->assertSelectorExists('div.alert.alert-success');
     }
 
+    /**
+     * @return void
+     */
     public function testSuccessfullSigninWithoutUploadingAvatar()
     {
         $client = $this->createClient();

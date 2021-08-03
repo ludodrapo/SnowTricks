@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use DateTime;
 use App\Entity\User;
 use App\Entity\Trick;
 use App\Entity\Video;
@@ -14,6 +13,10 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+/**
+ * class AppFixtures
+ * @package App\DataFixtures
+ */
 class AppFixtures extends Fixture
 {
     protected $hasher;
@@ -33,12 +36,12 @@ class AppFixtures extends Fixture
         $pictureIndex = 1;
 
         $userNames = [
-            'mando',
-            'vader',
-            'stormy',
-            'yoda',
+            'Mando',
+            'Vader',
+            'Stormy',
+            'Yoda',
             'R2D2',
-            'jabba',
+            'Jabba',
             'C3PO'
         ];
 
@@ -69,6 +72,21 @@ class AppFixtures extends Fixture
             'method air'
         ];
 
+        $descriptions = [
+            "On commence tout simplement avec LE trick. 
+            Les mauvaises langues prétendent qu’un backside air 
+            suffit à reconnaître ceux qui savent snowboarder. 
+            Si c’est vrai, alors Nicolas Müller est le meilleur 
+            snowboardeur du monde. Personne ne sait s’étirer aussi joliment, 
+            ne demeure aussi zen, n’est aussi provocant dans la jouissance.",
+            "Bode Merril est la preuve vivante que la réincarnation 
+            n’est pas un conte de fée. Dans sa vie antérieure de flamant rose, 
+            il avait déjà l’habitude d’affronter le quotidien sur une patte. 
+            Quelque 200 ans plus tard, il a eu la chance d’être un homme doté d’un snowboard, 
+            ce qui a fini par donner à son être l’élan nécessaire. 
+            Il aime bien s’avaler quelques one foot double backflips au p’tit déj."
+        ];
+
         for ($i = 0; $i < count($userNames); $i++) {
 
             $newUser = new User;
@@ -78,7 +96,7 @@ class AppFixtures extends Fixture
                     ->setEmail($userNames[$i] . '@gmail.com')
                     ->setPassword($hashedPassword)
                     ->setIdPhotoPath('/uploads/idPhotos/' . $userNames[$i] . '.png')
-                    ->setScreenName(ucfirst($userNames[$i]))
+                    ->setScreenName($userNames[$i])
             );
 
             $newCategory = new Category;
@@ -88,14 +106,14 @@ class AppFixtures extends Fixture
                     ->setSlug($this->slugger->slug($categoryNames[$i]))
             );
 
-            for ($j = 1; $j <= 2; $j++) {
+            for ($j = 0; $j <= 1; $j++) {
 
                 $newTrick = new Trick;
                 $manager->persist(
                     $newTrick
                         ->setName($trickNames[$trickIndex])
                         ->setSlug($this->slugger->slug($trickNames[$trickIndex]))
-                        ->setDescription("Courte description de comment réaliser ce 'fake' trick, histoire d'avoir quelque chose dans la description. Et aussi parce que les lorem ipsum, ça suffit !")
+                        ->setDescription($descriptions[$j])
                         ->setCategory($newCategory)
                         ->setUser($newUser)
                         ->addPicture(
@@ -120,12 +138,16 @@ class AppFixtures extends Fixture
                             (new Video())
                                 ->setUrl("https://www.youtube.com/embed/SQNc3VBOgEM")
                         )
+                        ->addVideo(
+                            (new Video())
+                                ->setUrl("https://www.youtube.com/embed/OsbpD8BN10k")
+                        )
                 );
 
                 for ($c = 1; $c <= 6; $c++) {
                     $manager->persist(
                         (new Comment())
-                            ->setContent("Petit commentaire inutile sur un trick n'existant pas plus que l'utilisateur qui rédige ces mots.")
+                            ->setContent("Petit commentaire inutile sur un trick n'existant pas plus que l'utilisateur censé avoir rédigé ces mots.")
                             ->setTrick($newTrick)
                             ->setUser($newUser)
                     );

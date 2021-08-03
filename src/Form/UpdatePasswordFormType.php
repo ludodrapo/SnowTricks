@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\User;
@@ -11,9 +13,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 
-
+/**
+ * class UpdatePasswordFormType
+ * @package App\Form
+ */
 class UpdatePasswordFormType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -31,13 +41,15 @@ class UpdatePasswordFormType extends AbstractType
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => '#^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)(?!.*\s)([\W\w]{8,16})$#',
-                        'message' => "Votre mot de passe doit contenir une majuscule, une minuscule, un chiffre, un caractère spécial et être composé d'entre 8 et 16 caractères."
+                        'message' => "Votre mot de passe doit contenir une majuscule, 
+                        une minuscule, un chiffre, un caractère spécial 
+                        et être composé d'entre 8 et 16 caractères."
                     ])
                 ],
                 'mapped' => false,
                 'first_options'  => [
                     'attr' => [
-                        'class' => 'password_to_check'
+                        'class' => 'password-to-check'
                     ],
                     'label' => 'Nouveau mot de passe'
                 ],
@@ -46,6 +58,10 @@ class UpdatePasswordFormType extends AbstractType
             ]);
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

@@ -10,6 +10,8 @@ use App\Repository\VideoRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * class Video
+ * @package App\Entity
  * @ORM\Entity(repositoryClass=VideoRepository::class)
  */
 class Video
@@ -33,16 +35,26 @@ class Video
      */
     private ?Trick $trick = null;
 
+    /**
+     * @return integer|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getUrl(): ?string
     {
         return $this->url;
     }
 
+    /**
+     * @param string $url
+     * @return self
+     */
     public function setUrl(string $url): self
     {
         $this->url = $url;
@@ -50,11 +62,18 @@ class Video
         return $this;
     }
 
+    /**
+     * @return Trick|null
+     */
     public function getTrick(): ?Trick
     {
         return $this->trick;
     }
 
+    /**
+     * @param Trick|null $trick
+     * @return self
+     */
     public function setTrick(?Trick $trick): self
     {
         $this->trick = $trick;

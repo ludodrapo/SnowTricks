@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
- * Class PictureListener
+ * class PictureListener
  * @package App\EntityListener
  */
 class PictureListener

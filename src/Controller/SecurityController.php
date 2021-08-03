@@ -18,7 +18,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-
+/**
+ * class SecurityController
+ * @package App\Controller
+ */
 class SecurityController extends AbstractController
 {
     /**
@@ -101,6 +104,7 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             // encode the plain password
             $user->setPassword(
                 $hasher->hashPassword(
@@ -108,12 +112,13 @@ class SecurityController extends AbstractController
                     $form->get('password')->getData()
                 )
             );
+
             // and upload the avatar image
             /** @var UploadedFile $file */
             $idPhotoFile = $form->get('idPhoto')->getData();
             if ($idPhotoFile) {
                 $idPhotoFileName = $fileUploader->upload($idPhotoFile);
-                $user->setIdPhotoPath('/' . $fileUploader->getTargetDirectory() . '/' . $idPhotoFileName);
+                $user->setIdPhotoPath('/' . $fileUploader->getDisplayDirectory() . '/' . $idPhotoFileName);
             } else if (!$idPhotoFile) {
                 $user->setIdPhotoPath('/assets/img/basic-avatar.png');
             }

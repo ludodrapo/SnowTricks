@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
+ * class Trick
+ * @package App\Entity
  * @ORM\Entity(repositoryClass=TrickRepository::class)
  * @UniqueEntity(fields={"name"}, message="Ce nom de trick existe déjà, merci de le modifier.")
  */
@@ -90,16 +92,26 @@ class Trick
         $this->comments = new ArrayCollection();
     }
 
+    /**
+     * @return integer|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return self
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -107,11 +119,18 @@ class Trick
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getSlug(): ?string
     {
         return $this->slug;
     }
 
+    /**
+     * @param string $slug
+     * @return self
+     */
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
@@ -119,11 +138,18 @@ class Trick
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param string $description
+     * @return self
+     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
@@ -131,23 +157,26 @@ class Trick
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getCreationDate(): ?\DateTimeInterface
     {
         return $this->creationDate;
     }
 
-    // public function setCreationDate(\DateTimeInterface $creationDate): self
-    // {
-    //     $this->creationDate = $creationDate;
-
-    //     return $this;
-    // }
-
+    /**
+     * @return Category|null
+     */
     public function getCategory(): ?Category
     {
         return $this->category;
     }
 
+    /**
+     * @param Category|null $category
+     * @return self
+     */
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
@@ -163,6 +192,10 @@ class Trick
         return $this->pictures;
     }
 
+    /**
+     * @param Picture|null $picture
+     * @return self
+     */
     public function addPicture(?Picture $picture): self
     {
         if (!$this->pictures->contains($picture)) {
@@ -173,6 +206,10 @@ class Trick
         return $this;
     }
 
+    /**
+     * @param Picture|null $picture
+     * @return self
+     */
     public function removePicture(?Picture $picture): self
     {
         $filesystem = new Filesystem;
@@ -195,6 +232,10 @@ class Trick
         return $this->videos;
     }
 
+    /**
+     * @param Video $video
+     * @return self
+     */
     public function addVideo(Video $video): self
     {
         if (!$this->videos->contains($video)) {
@@ -205,6 +246,10 @@ class Trick
         return $this;
     }
 
+    /**
+     * @param Video $video
+     * @return self
+     */
     public function removeVideo(Video $video): self
     {
         if ($this->videos->removeElement($video)) {
@@ -225,6 +270,10 @@ class Trick
         return $this->comments;
     }
 
+    /**
+     * @param Comment $comment
+     * @return self
+     */
     public function addComment(Comment $comment): self
     {
         if (!$this->comments->contains($comment)) {
@@ -235,6 +284,10 @@ class Trick
         return $this;
     }
 
+    /**
+     * @param Comment $comment
+     * @return self
+     */
     public function removeComment(Comment $comment): self
     {
         if ($this->comments->removeElement($comment)) {
@@ -247,11 +300,18 @@ class Trick
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     * @return self
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
