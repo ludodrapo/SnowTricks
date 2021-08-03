@@ -1,14 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace tests\Controller;
 
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * class ProfilerControllerTest
+ * @package tests\Controller
+ */
 class ProfilerControllerTest extends WebTestCase
 {
 
+    /**
+     * @return void
+     */
     public function testAccessingProfilePageWhileNotLoggedInRedirectsToLogin()
     {
         $client = $this->createClient();
@@ -21,6 +30,9 @@ class ProfilerControllerTest extends WebTestCase
         $this->assertResponseRedirects('/login');
     }
 
+    /**
+     * @return void
+     */
     public function testProfilePageIsUpWhileUserLoggedIn()
     {
         $client = static::createClient();
@@ -35,6 +47,9 @@ class ProfilerControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h2', $testUser->getScreenName());
     }
 
+    /**
+     * @return void
+     */
     public function testUpdatePasswordReturningOk()
     {
         $client = static::createClient();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Entity\User;
@@ -8,10 +10,13 @@ use Symfony\Component\Mime\Address;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 
-
+/**
+ * class ResetPasswordMailer
+ * @package App\Service
+ */
 class ResetPasswordMailer
 {
-    /** @var MailerInterface */
+    /** @var MailerInterface $mailer */
     private $mailer;
 
     /** @var  ResetPassword $resetter */
@@ -26,7 +31,7 @@ class ResetPasswordMailer
     }
 
     /**
-     * To generate a templated email to communicate the new password to the user
+     * To generate a templated email to send the new password to the user
      * 
      * @param User $user
      * @return TemplatedEmail

@@ -42,7 +42,7 @@ class TrickType extends AbstractType
                 'placeholder' => '-- Choisissez une catégorie --',
                 'class' => Category::class,
                 'choice_label' => function (Category $category) {
-                    return strtoupper($category->getName());
+                    return ucfirst($category->getName());
                 }
             ])
             ->add('pictures', CollectionType::class, [

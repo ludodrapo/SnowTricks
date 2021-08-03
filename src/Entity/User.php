@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -8,13 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
+ * class User
+ * @package App\Entity
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"email"}, message="Cet email existe déjà, peut-être souhaitez vous réinitialiser votre mot de passe ?")
+ * @UniqueEntity(fields={"email"}, message="Cet email existe déjà, peut-être souhaitez-vous réinitialiser votre mot de passe ?")
  * @UniqueEntity(fields={"screenName"}, message="Ce nom d'utilisateur existe déjà, merci d'en saisir un différent.")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -49,10 +52,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @var UploadedFile|null
-     * @Assert\File(
-     *     mimeTypes="image/*",
-     *     mimeTypesMessage="Ce fichier n'est pas une image."
-     * )
      */
     private ?UploadedFile $file = null;
 
@@ -72,17 +71,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->tricks = new ArrayCollection();
     }
 
-
+    /**
+     * @return integer|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     * @return self
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -94,6 +102,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * A visual identifier that represents this user.
      *
      * @see UserInterface
+     * @return string
      */
     public function getUserIdentifier(): string
     {
@@ -110,6 +119,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @see UserInterface
+     * @return array
      */
     public function getRoles(): array
     {
@@ -120,6 +130,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array $roles
+     * @return self
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -129,12 +143,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @see PasswordAuthenticatedUserInterface
+     * @return string
      */
     public function getPassword(): string
     {
         return $this->password;
     }
 
+    /**
+     * @param string $password
+     * @return self
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -147,6 +166,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
      *
      * @see UserInterface
+     * @return string|null
      */
     public function getSalt(): ?string
     {
@@ -155,6 +175,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @see UserInterface
+     * @return void
      */
     public function eraseCredentials()
     {
@@ -190,17 +211,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @param UploadedFile|null $file
+     * @return void
      */
     public function setFile(?UploadedFile $file): void
     {
         $this->file = $file;
     }
 
+    /**
+     * @return string|null
+     */
     public function getScreenName(): ?string
     {
         return $this->screenName;
     }
 
+    /**
+     * @param string $screenName
+     * @return self
+     */
     public function setScreenName(string $screenName): self
     {
         $this->screenName = $screenName;
@@ -216,6 +245,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->comments;
     }
 
+    /**
+     * @param Comment $comment
+     * @return self
+     */
     public function addComment(Comment $comment): self
     {
         if (!$this->comments->contains($comment)) {
@@ -226,6 +259,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @param Comment $comment
+     * @return self
+     */
     public function removeComment(Comment $comment): self
     {
         if ($this->comments->removeElement($comment)) {

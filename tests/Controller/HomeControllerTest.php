@@ -1,16 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace tests\Controller;
 
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-
 /**
- * Class HomeControllerTest
+ * class HomeControllerTest
  * @package tests\Controller
- * 
  */
 class HomeControllerTest extends WebTestCase
 {

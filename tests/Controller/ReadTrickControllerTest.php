@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace tests\Controller;
 
 use App\Repository\TrickRepository;
@@ -7,8 +9,15 @@ use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * class ReadTrickControllerTest
+ * @package tests\Controller
+ */
 class ReadTrickControllerTest extends WebTestCase
 {
+    /**
+     * @return void
+     */
     public function testDisplaysCategoryTricks()
     {
         $client = $this->createClient();
@@ -24,6 +33,9 @@ class ReadTrickControllerTest extends WebTestCase
         $this->assertCount($tricksCount, $crawler->filter('.card-body'));
     }
 
+    /**
+     * @return void
+     */
     public function testReadOneExistingTrickReturningOk()
     {
         $client = $this->createClient();

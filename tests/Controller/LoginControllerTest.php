@@ -1,15 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace tests\Controller;
 
-use App\Entity\User;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
- * Class LoginControllerTest
+ * class LoginControllerTest
  * @package tests\Controller
  */
 class LoginControllerTest extends WebTestCase
@@ -47,6 +47,9 @@ class LoginControllerTest extends WebTestCase
         $this->assertSelectorExists('.alert.alert-danger');
     }
 
+    /**
+     * @return void
+     */
     public function testSuccessfullLogin()
     {
         $client = static::createClient();
@@ -65,6 +68,9 @@ class LoginControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h3', 'Bienvenue ' . ucfirst($testUser->getScreenName()) . ' !');
     }
 
+    /**
+     * @return void
+     */
     public function testSuccessfullLogout()
     {
         $client = $this->createClient();

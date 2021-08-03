@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Category;
 use App\Entity\Trick;
 use App\Entity\Comment;
@@ -19,6 +18,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
+/**
+ * class TrickController
+ * @package App\Controller
+ */
 class TrickController extends AbstractController
 {
     /**
@@ -53,10 +57,6 @@ class TrickController extends AbstractController
             $request->query->getInt('page', 1),
             5
         );
-
-        // if (!$trick) {
-        //     throw $this->createNotFoundException("Désolé, ce trick n'existe pas ou plus.");
-        // }
 
         $comment = new Comment;
         $commentForm = $this->createForm(CommentType::class, $comment);

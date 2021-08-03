@@ -3,7 +3,7 @@
  * One check icon on each line.
  */
 
-document.querySelector(".password_to_check").addEventListener("input", checkPassword);
+document.querySelector(".password-to-check").addEventListener("input", checkPassword);
 
 function checkPassword() {
     let password = this.value;

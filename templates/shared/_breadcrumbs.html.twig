@@ -9,12 +9,12 @@
 				{% if trick is defined %}
 					<li>
 						<a href="{{ path('trick_category', {'slug': trick.category.slug}) }}">
-							{{ trick.category.name }}
+							{{ trick.category.name|capitalize }}
 						</a>
 					</li>
-					<li>{{ trick.name }}</li>
+					<li>{{ trick.name|capitalize }}</li>
 				{% else %}
-					<li>{{ category.name }}</li>
+					<li>{{ category.name|capitalize }}</li>
 				{% endif %}
 			</ol>
 		</div>

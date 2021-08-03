@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace tests\Controller;
 
 use App\Repository\UserRepository;
@@ -7,8 +9,15 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * class CreateTrickControllerTest
+ * @package tests\Controller
+ */
 class CreateTrickControllerTest extends WebTestCase
 {
+    /**
+     * @return void
+     */
     public function testTryingToAccessCreateTrickPageWhileNotLoggedInRedirectsToLogin()
     {
         $client = $this->createClient();
@@ -18,6 +27,9 @@ class CreateTrickControllerTest extends WebTestCase
         $this->assertResponseRedirects('/login');
     }
 
+    /**
+     * @return void
+     */
     public function testSuccessfullCreateOneTrick()
     {
         $client = $this->createClient();
@@ -25,9 +37,6 @@ class CreateTrickControllerTest extends WebTestCase
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneBy([]);
         $client->loginUser($testUser);
-
-        // $client->request('GET', 'admin/trick/create');
-        // $this->assertSelectorTextContains('h2', 'Nouveau trick');
 
         $crawler = $client->request('GET', 'admin/trick/create');
 

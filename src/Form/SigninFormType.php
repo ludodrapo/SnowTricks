@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\User;
@@ -17,8 +19,18 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Image;
 
+
+/**
+ * class SigninFormType
+ * @package App\Form
+ */
 class SigninFormType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -40,7 +52,7 @@ class SigninFormType extends AbstractType
                 'label' => "Mot de passe",
                 'mapped' => false,
                 'attr' => [
-                    'class' => 'password_to_check',
+                    'class' => 'password-to-check',
                     'autocomplete' => 'new-password'
                 ],
                 'constraints' => [
@@ -78,6 +90,10 @@ class SigninFormType extends AbstractType
             ]);
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

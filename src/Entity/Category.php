@@ -11,6 +11,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
+ * class Category
+ * @package App\Entity
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
  */
 class Category
@@ -42,16 +44,26 @@ class Category
         $this->tricks = new ArrayCollection();
     }
 
+    /**
+     * @return integer|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return self
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -59,11 +71,18 @@ class Category
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getSlug(): ?string
     {
         return $this->slug;
     }
 
+    /**
+     * @param string $slug
+     * @return self
+     */
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
@@ -79,6 +98,10 @@ class Category
         return $this->tricks;
     }
 
+    /**
+     * @param Trick $trick
+     * @return self
+     */
     public function addTrick(Trick $trick): self
     {
         if (!$this->tricks->contains($trick)) {
@@ -89,6 +112,10 @@ class Category
         return $this;
     }
 
+    /**
+     * @param Trick $trick
+     * @return self
+     */
     public function removeTrick(Trick $trick): self
     {
         if ($this->tricks->removeElement($trick)) {
