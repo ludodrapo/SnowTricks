@@ -13,7 +13,9 @@ Coded by Ludo Drapo with Symfony 5.3, php 7.4.12 and MySql 5.7.
 
 Visually based on the Vesperr Template created by BootstapMade.Com
 
-To "try it at home", you can download these files, configure your .env.local with the access to your database server like this
+To "try it at home", you can download these files, or clone this repository.
+
+You'll have to configure your .env.local with the access to your database server like this
 ```
 ###> doctrine/doctrine-bundle ###
 DATABASE_URL="mysql:/db_/user:db_password@127.0.0.1:8889/db_name?serverVersion=5.7"
@@ -23,7 +25,7 @@ then run
 ```
 % composer install
 ```
-And after that run
+And after that
 ```
 % composer prepare
 ```
