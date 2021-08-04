@@ -9,7 +9,7 @@
 
 Project number 6 from the OpenClassRooms cursus on PHP/Symfony developpement.
 
-Developped by Ludo Drapo with Symfony 5.3, php 7.4.12 and MySql 5.7.
+Coded by Ludo Drapo with Symfony 5.3, php 7.4.12 and MySql 5.7.
 
 Visually based on the Vesperr Template created by BootstapMade.Com
 
