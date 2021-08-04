@@ -29,7 +29,7 @@ And after that
 ```
 % composer prepare
 ```
-Finaly, you will have to configure your DSN-MAILER (for instance mailtrap.io)
+Finaly, you will have to configure your DSN-MAILER (for instance mailtrap.io) in your env.local too
 ```
 ###> symfony/mailer ###
 MAILER_DSN= (...)
