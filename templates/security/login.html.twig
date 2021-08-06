@@ -58,34 +58,36 @@
 					</button>
 				</form>
 
-			{% endif %}
 
-			<!-- Button trigger modal -->
-			<a data-bs-toggle="modal" href="#resetPassword" class="mb-5">
-				J'ai oublié mon mot de passe !
-			</a>
+				<!-- Button trigger modal -->
+				<a data-bs-toggle="modal" href="#resetPassword" class="mb-5">
+					J'ai oublié mon mot de passe !
+				</a>
 
-			<!-- Modal -->
-			<div class="modal fade" id="resetPassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						{{ form_start(formView, {'action': path('security_forgottenPassword'), 'legend': ''}) }}
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Pour réinitialiser votre mot de passe ...</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				<!-- Modal -->
+				<div class="modal fade" id="resetPassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							{{ form_start(formView, {'action': path('security_forgottenPassword'), 'legend': ''}) }}
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Pour réinitialiser votre mot de passe ...</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								{{ form_widget(formView) }}
+								{{ form_errors(formView) }}
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+								<button type="submit" class="btn btn-danger">Réinitialiser</button>
+							</div>
+							{{ form_end(formView) }}
 						</div>
-						<div class="modal-body">
-							{{ form_widget(formView) }}
-							{{ form_errors(formView) }}
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-							<button type="submit" class="btn btn-danger">Réinitialiser</button>
-						</div>
-						{{ form_end(formView) }}
 					</div>
 				</div>
-			</div>
+
+			{% endif %}
+
 		</div>
 	</div>
 </section>{% endblock %}

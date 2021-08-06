@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
 use App\Entity\User;
@@ -73,17 +75,11 @@ class AppFixtures extends Fixture
         ];
 
         $descriptions = [
-            "On commence tout simplement avec LE trick. 
-            Les mauvaises langues prétendent qu’un backside air 
-            suffit à reconnaître ceux qui savent snowboarder. 
-            Si c’est vrai, alors Nicolas Müller est le meilleur 
-            snowboardeur du monde. Personne ne sait s’étirer aussi joliment, 
-            ne demeure aussi zen, n’est aussi provocant dans la jouissance.",
-            "Bode Merril est la preuve vivante que la réincarnation 
-            n’est pas un conte de fée. Dans sa vie antérieure de flamant rose, 
-            il avait déjà l’habitude d’affronter le quotidien sur une patte. 
-            Quelque 200 ans plus tard, il a eu la chance d’être un homme doté d’un snowboard, 
-            ce qui a fini par donner à son être l’élan nécessaire. 
+            "On commence tout simplement avec LE trick. Les mauvaises langues prétendent qu’un backside air suffit à reconnaître ceux qui savent snowboarder. 
+            Si c’est vrai, alors Nicolas Müller est le meilleur snowboardeur du monde. 
+            Personne ne sait s’étirer aussi joliment, ne demeure aussi zen, n’est aussi provocant dans la jouissance.",
+            "Bode Merril est la preuve vivante que la réincarnation n’est pas un conte de fée. Dans sa vie antérieure de flamant rose, il avait déjà l’habitude d’affronter le quotidien sur une patte. 
+            Quelque 200 ans plus tard, il a eu la chance d’être un homme doté d’un snowboard, ce qui a fini par donner à son être l’élan nécessaire. 
             Il aime bien s’avaler quelques one foot double backflips au p’tit déj."
         ];
 
@@ -103,7 +99,7 @@ class AppFixtures extends Fixture
             $manager->persist(
                 $newCategory
                     ->setName($categoryNames[$i])
-                    ->setSlug($this->slugger->slug($categoryNames[$i]))
+                    ->setSlug((string) $this->slugger->slug($categoryNames[$i]))
             );
 
             for ($j = 0; $j <= 1; $j++) {
@@ -112,13 +108,14 @@ class AppFixtures extends Fixture
                 $manager->persist(
                     $newTrick
                         ->setName($trickNames[$trickIndex])
-                        ->setSlug($this->slugger->slug($trickNames[$trickIndex]))
+                        ->setSlug($this->slugger->slug($trickNames[$trickIndex])->toString())
                         ->setDescription($descriptions[$j])
                         ->setCategory($newCategory)
                         ->setUser($newUser)
                         ->addPicture(
                             (new Picture())
                                 ->setPath('/uploads/pictures/picture - ' . $pictureIndex . '.jpeg')
+                                ->setAlt('Photo de ' . $newTrick->getName())
                         )
                 );
 
@@ -129,6 +126,7 @@ class AppFixtures extends Fixture
                         ->addPicture(
                             (new Picture())
                                 ->setPath('/uploads/pictures/picture - ' . $pictureIndex . '.jpeg')
+                                ->setAlt('Photo de ' . $newTrick->getName())
                         )
                         ->addVideo(
                             (new Video())

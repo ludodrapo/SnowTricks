@@ -26,7 +26,7 @@ class TransformerTest extends TestCase
     {
         $transformer = new UrlToEmbedTransformer;
 
-        $this->expectExceptionMessage("Cette url n'est pas prise en charge par notre système.");
+        $this->expectExceptionMessage("L'url de cette vidéo n'est pas prise en charge par notre système.");
 
         $transformer->urlToEmbed('https://www.facebook.com/youtube/videos/1547601798759401/?extid=CL-UNK-UNK-UNK-AN_GK0T-GK1C');
     }

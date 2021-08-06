@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\User;
@@ -27,11 +29,6 @@ class SecurityController extends AbstractController
     /**
      * @Route("/profile", name="security_profile")
      * @IsGranted("ROLE_USER")
-     *
-     * @param Request $request
-     * @param UserPasswordHasherInterface $hasher
-     * @param EntityManagerInterface $em
-     * @return Response
      */
     public function profile(
         Request $request,
@@ -61,16 +58,12 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/login", name="security_login")
-     *
-     * @param AuthenticationUtils $utils
-     * @param Request $request
-     * @return Response
      */
     public function login(
         AuthenticationUtils $utils,
         Request $request
     ): Response {
-
+        
         $form = $this->createForm(ResetPasswordFormType::class);
         $form->handleRequest($request);
 
@@ -86,11 +79,6 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/signin", name="security_signin")
-     * @param Request $request
-     * @param UserPasswordHasherInterface $hasher
-     * @param EntityManagerInterface $em
-     * @param FileUploader $fileUploader
-     * @return Response
      */
     public function signin(
         Request $request,
@@ -146,10 +134,6 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/forgotten-password", name="security_forgottenPassword")
-     *
-     * @param Request $request
-     * @param UserRepository $userRepository
-     * @return Response
      */
     public function forgottenPassword(
         Request $request,

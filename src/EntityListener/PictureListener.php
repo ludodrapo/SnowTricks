@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\EntityListener;
 
 use App\Entity\Picture;
@@ -75,7 +77,7 @@ class PictureListener
                 PATHINFO_FILENAME
             );
             $safeFilename = strtolower(
-                $this->slugger->slug($originalFilename)
+                $this->slugger->slug($originalFilename)->toString()
             );
             $filename = $safeFilename . '-' . uniqid() . '.' . $file->guessClientExtension();
 
