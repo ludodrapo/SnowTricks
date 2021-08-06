@@ -34,7 +34,7 @@ class UrlToEmbedTransformer
 
             $functionnal_link = 'https://www.dailymotion.com/embed/video/' . $this->getDailyMotionVideoId($url, $host);
         } else {
-            throw new Exception("Cette url n'est pas prise en charge par notre système.");
+            throw new Exception("L'url de cette vidéo n'est pas prise en charge par notre système.");
         }
         return $functionnal_link;
     }

@@ -57,6 +57,11 @@ class EditTrickControllerTest extends WebTestCase
                 'name' => 'Test de modification de trick',
                 'description' => 'Modification de la description toujours très courte mais juste assez longue pour passer les constraints.',
                 'category' => 2,
+                'pictures' => [
+                    ['alt' => "Modification d'un texte alternatif"],
+                    ['alt' => "Seconde modification d'un texte alternatif"],
+                    ['alt' => "Ajout d'un texte alternatif"]
+                ],
                 'videos' => [
                     ['url' => 'https://www.youtube.com/watch?v=_DCkjHact1M']
                 ]

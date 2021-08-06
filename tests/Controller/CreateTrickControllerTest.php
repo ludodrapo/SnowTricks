@@ -50,6 +50,9 @@ class CreateTrickControllerTest extends WebTestCase
                 'name' => 'Test de trick',
                 'description' => 'Description courte mais assez longue pour passer les constraints.',
                 'category' => 1,
+                'pictures' => [
+                    ['alt' => "Test de création de texte alternatif"]
+                ],
                 'videos' => [
                     ['url' => 'https://www.youtube.com/embed/SQNc3VBOgEM']
                 ]
@@ -63,13 +66,15 @@ class CreateTrickControllerTest extends WebTestCase
         $fileData = [
             'trick' => [
                 'pictures' => [
-                    ['file' => new UploadedFile(
-                        $path,
-                        $filename,
-                        'image/png',
-                        null,
-                        true
-                    )]
+                    [
+                        'file' => new UploadedFile(
+                            $path,
+                            $filename,
+                            'image/png',
+                            null,
+                            true
+                        )
+                    ]
                 ]
             ]
         ];

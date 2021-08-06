@@ -46,7 +46,7 @@ class FileUploader
     }
 
     /**
-     * Target to move the uploaded file to
+     * Target directory to move the uploaded file to
      * @return string
      */
     public function getTargetDirectory()
@@ -55,7 +55,7 @@ class FileUploader
     }
 
     /**
-     * Path to the directory to save in db
+     * Path to directory to save in db
      * @return string
      */
     public function getDisplayDirectory()

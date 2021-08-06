@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\Category;
@@ -10,6 +12,7 @@ use App\Form\CommentType;
 use App\Repository\CommentRepository;
 use App\Service\UrlToEmbedTransformer;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\Form\FormError;
 
 /**
  * class TrickController
@@ -27,7 +30,6 @@ class TrickController extends AbstractController
 {
     /**
      * @Route("/{slug}", name="trick_category", priority=-1)
-     * @param Category $category
      */
     public function category(Category $category): Response
     {
@@ -38,9 +40,6 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/{category_slug}/{slug}", name="trick_show")
-     * @param Request $request
-     * @param EntityManagerInterface $em
-     * @return Response
      */
     public function show(
         Trick $trick,
@@ -85,11 +84,6 @@ class TrickController extends AbstractController
 
     /**
      * @Route("admin/trick/create", name="trick_create")
-     * @param Request $request
-     * @param SluggerInterface $slugger
-     * @param EntityManagerInterface $em
-     * @param UrlToEmbedTransformer $transformer
-     * @return Response
      */
     public function create(
         Request $request,
@@ -102,13 +96,25 @@ class TrickController extends AbstractController
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $trick->setSlug(strtolower($slugger->slug($trick->getName())));
-            $trick->setUser($this->getUser());
-            //transforming any url in embed video functionnal links
-            foreach ($trick->getVideos() as $video) {
-                $video->setUrl($transformer->urlToEmbed($video->getUrl()));
+        //transforming any url in embed video functionnal links
+        //adding exception to the form_errors
+        if ($form->isSubmitted()) {
+            foreach ($trick->getVideos() as $k => $video) {
+                try {
+                    $video->setUrl($transformer->urlToEmbed($video->getUrl()));
+                } catch (Exception $e) {
+                    $form->get('videos')->get((string) $k)->addError(new FormError($e->getMessage()));
+                }
             }
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $trick->setSlug(strtolower((string) $slugger->slug($trick->getName())));
+            $trick->setUser($this->getUser());
+
+            // foreach ($trick->getPictures() as $picture) {
+            //     $picture->setAlt(strtolower((string) $slugger->slug($picture->getAlt())));
+            // }
 
             $em->persist($trick);
             $em->flush();
@@ -126,12 +132,6 @@ class TrickController extends AbstractController
 
     /**
      * @Route("admin/trick/{id}/edit", name="trick_edit")
-     * @param Request $request
-     * @param Trick $trick
-     * @param SluggerInterface $slugger
-     * @param EntityManagerInterface $em
-     * @param UrlToEmbedTransformer $transformer
-     * @return Response
      */
     public function edit(
         Request $request,
@@ -143,14 +143,22 @@ class TrickController extends AbstractController
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
+        //transforming any url in embed video functionnal links
+        //adding exception to the form_errors
+        if ($form->isSubmitted()) {
+            foreach ($trick->getVideos() as $k => $video) {
+                try {
+                    $video->setUrl($transformer->urlToEmbed($video->getUrl()));
+                } catch (Exception $e) {
+                    $form->get('videos')->get((string) $k)->addError(new FormError($e->getMessage()));
+                }
+            }
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             // uncomment this if you want to change the trick slug when name is changed
             // $trick->setSlug(strtolower($slugger->slug($trick->getName())));
 
-            // if new videos are added
-            foreach ($trick->getVideos() as $video) {
-                $video->setUrl($transformer->urlToEmbed($video->getUrl()));
-            }
             $em->flush();
 
             return $this->redirectToRoute('trick_show', [
@@ -169,11 +177,6 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/admin/trick/{id}/delete", name="trick_delete")
-     *
-     * @param Trick $trick
-     * @param EntityManagerInterface $em
-     * @param Filesystem $filesystem
-     * @return Response
      */
     public function delete(
         Trick $trick,

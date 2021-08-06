@@ -24,7 +24,7 @@
 							{% for pic in trick.pictures %}
 
 								<div class="swiper-slide">
-									<img src="{{ asset(pic.path) }}" alt="picture of the snowboard trick called '{{ trick.name }}'">
+									<img src="{{ asset(pic.path) }}" alt="{{ pic.alt }}">
 								</div>
 
 							{% endfor %}
