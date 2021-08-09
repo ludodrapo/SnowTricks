@@ -20,7 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * class Trick
  * @package App\Entity
  * @ORM\Entity(repositoryClass=TrickRepository::class)
- * @UniqueEntity(fields={"name"}, message="Ce nom de trick existe déjà, merci de le modifier.")
+ * @UniqueEntity(fields={"name"}, message="Ce trick existe déjà, merci de le modifier sans en créer un nouveau.")
  */
 class Trick
 {
@@ -72,12 +72,12 @@ class Trick
      * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", orphanRemoval=true, cascade={"persist"})
      * @Assert\Count(min=1, minMessage="Vous devez associer au moins une vidéo à votre trick.")
      */
-    private $videos;
+    private Collection $videos;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true)
      */
-    private $comments;
+    private Collection $comments;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
