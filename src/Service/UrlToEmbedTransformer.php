@@ -88,12 +88,15 @@ class UrlToEmbedTransformer
 
         if (strpos($host, 'daily') == true) {
             if (count($partial_url) == 4) {
-                return $partial_url[3];
+                $videoId = $partial_url[3];
             } else {
-                return explode('_', $partial_url[2])[0];
+                $videoId = explode('_', $partial_url[2])[0];
             }
-        } else if ($host === 'dai.ly') {
-            return $partial_url[1];
         }
+        if ($host === 'dai.ly') {
+            $videoId = $partial_url[1];
+        }
+
+        return $videoId;
     }
 }

@@ -11,32 +11,40 @@
 	</div>
 
 	<div class="col-2">
+		{% if formView.vars.data is not null and formView.vars.data.path is not null %}
+			<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletePictureModal-{{ formView.vars.name }}">
+				<i class="fas fa-trash-alt"></i>
+			</button>
 
-		<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletePictureModal-{{ formView.vars.name }}">
-			<i class="fas fa-trash-alt"></i>
-		</button>
-
-		<!-- Confirmation modal box -->
-		<div class="modal fade" id="deletePictureModal-{{ formView.vars.name }}" tabindex="-1" aria-labelledby="deletePictureModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="deletePictureModalLabel">ATTENTION !</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<p>Etes-vous vraiment sûr de vouloir supprimer cette photo ? Cette action est irréversible.</p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-						<button type="button" class="btn btn-danger btn-remove" data-bs-dismiss="modal">
-							Supprimer définitivement
-						</button>
+			<!-- Confirmation modal box -->
+			<div class="modal fade" id="deletePictureModal-{{ formView.vars.name }}" tabindex="-1" aria-labelledby="deletePictureModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="deletePictureModalLabel">ATTENTION !</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<p>Etes-vous vraiment sûr de vouloir supprimer cette photo ? Cette action est irréversible.</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+							<button type="button" class="btn btn-danger btn-remove" data-bs-dismiss="modal">
+								Supprimer définitivement
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<!-- Modal confirmation box end -->
+			<!-- Modal confirmation box end -->
+
+		{% else %}
+
+			<button type="button" class="btn btn-danger btn-remove">
+				<i class="fas fa-trash-alt"></i>
+			</button>
+
+		{% endif %}
 
 	</div>
 </div>
