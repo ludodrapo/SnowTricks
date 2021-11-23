@@ -14,8 +14,6 @@ twig:
         # point this wherever your css files live
         '%kernel.project_dir%/public/assets/css': styles
 
-
-
 when@test:
     twig:
         strict_variables: true
