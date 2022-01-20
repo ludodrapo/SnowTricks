@@ -38,12 +38,12 @@ class AppFixtures extends Fixture
         $pictureIndex = 1;
 
         $userNames = [
-            'Mando',
-            'Vader',
-            'Stormy',
-            'Yoda',
+            'mando',
+            'vader',
+            'stormy',
+            'yoda',
             'R2D2',
-            'Jabba',
+            'jabba',
             'C3PO'
         ];
 
